@@ -16,6 +16,7 @@ import com.master.molemate.RoomDB.Entities.Entity_Users;
 import java.util.List;
 
 /*
+
 responsible for data handling of RoomDB!
 Used because it is good style using another layer between the actual app and the db doing the Data handling
 
@@ -53,6 +54,14 @@ public class MoleMateDB_Repository {
         return users;
     }
 
+    public void insertMole(Entity_Mole_Library moleLib_entry) {
+        new InsertMoleAsyncTask(moleLibDao).execute(moleLib_entry);
+    }
+
+    public LiveData<List<EntityMix_User_MoleLib>> getAllMolesOfUser(int uid){
+        return moleLibDao.getAllMolesFromUser(uid);
+    }
+
     private static class InsertUserAsyncTask extends AsyncTask<Entity_Users,Void,Void>{
 
         private DAO_Interface_Users userDao;
@@ -73,6 +82,21 @@ public class MoleMateDB_Repository {
             super.onPostExecute(aVoid);
 
             Log.d(TAG, "onPostExecute: inserted user");
+        }
+    }
+
+    private static class InsertMoleAsyncTask extends AsyncTask<Entity_Mole_Library,Void,Void>{
+
+        private DAO_Interface_Mole_Library moleLibDao;
+
+        private InsertMoleAsyncTask(DAO_Interface_Mole_Library moleLibDao){
+            this.moleLibDao = moleLibDao;
+        }
+
+        @Override
+        protected Void doInBackground(Entity_Mole_Library... entity_mole_libraries) {
+            moleLibDao.insert(entity_mole_libraries[0]);
+            return null;
         }
     }
 }

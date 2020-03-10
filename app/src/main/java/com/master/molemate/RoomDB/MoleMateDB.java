@@ -24,9 +24,11 @@ public abstract class MoleMateDB extends RoomDatabase {
     private static MoleMateDB mInstance;
 
     public abstract DAO_Interface_Mole_Library moleLibDAO();
-
     public abstract DAO_Interface_Users usersDAO();
 
+    /*
+        Constructor of Singleton
+     */
     public static synchronized MoleMateDB getInstance(Context context){
         if(mInstance == null){
             mInstance = Room.databaseBuilder(context.getApplicationContext(),
@@ -70,5 +72,7 @@ public abstract class MoleMateDB extends RoomDatabase {
             Log.d(TAG, "onPostExecute: inserted default User");
         }
     }
+
+
 
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface DAO_Interface_Users {
 
-    @Query("SELECT * FROM users_table WHERE uid LIKE :uid")
+    @Query("SELECT * FROM users_table WHERE uid = :uid")
     Entity_Users getUserFromId(int uid);
 
     @Query("SELECT * FROM users_table WHERE uid = 0")

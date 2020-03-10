@@ -6,8 +6,11 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-@Entity
+@Entity(tableName = "mole_library_table",
+        foreignKeys = @ForeignKey(entity = Entity_Users.class,
+                parentColumns = "uid",
+                childColumns = "uid_of_mole_user",
+                onDelete = ForeignKey.CASCADE))
 public class Entity_Mole_Library {
 
     /* Will be the Date given by the file name (ConstantString_Date_RandomNumer.jpg) */

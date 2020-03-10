@@ -46,4 +46,12 @@ public class MoleMateDB_ViewModel extends ViewModel {
     public void insertUser(Entity_Users user_Entry){
         repository.insertUser(user_Entry);
     }
+
+    public void insertMole(Entity_Mole_Library moleLib_Entry){
+        repository.insertMole(moleLib_Entry);
+    }
+
+    public LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
+        return repository.getAllMolesOfUser(uid);
+    }
 }
