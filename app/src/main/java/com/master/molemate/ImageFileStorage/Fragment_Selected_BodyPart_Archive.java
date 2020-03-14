@@ -62,6 +62,7 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
 
         int currentUser = ((ImageFileArchive)getActivity()).currentUser;
 
+
         fragmentCom =
                 new ViewModelProvider(getActivity()).get(ViewModel_ImageArchive_Communication.class);
 
@@ -69,6 +70,7 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
 
 
         //TODO: Visueller Effekt einfügen für bessere Wiedererkennung, ob Hautläsion gefährlich oder nicht
+
 
         return layout;
     }
@@ -86,6 +88,8 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
     }
 
     private void extractingImagesAccordingBodyPart(String selectedBodyPart, List<EntityMix_User_MoleLib> moleLibCurrentUser) {
+
+        moleItemList.clear();
 
         int colorCode = decodeColorCode(selectedBodyPart);
 
@@ -126,6 +130,8 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
                 colorCode = -40000;
                 break;
         }
+
+        Log.d(TAG, " decodeColorCode: selectedBodyPart: " + selectedBodyPart + " plus corresponding ID " + colorCode);
 
         return colorCode;
     }
