@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    tool:showIn="navigationView">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_item_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home"
+            android:iconTint="@color/colorPrimaryComplementary"/>
+        <item
+            android:id="@+id/menu_item_cancer_free"
+            android:icon="@drawable/ic_camera"
+            android:title="@string/menuItemTakePic"
+            android:iconTint="@color/colorPrimaryComplementary"/>
+        <item
+            android:id="@+id/menu_item_health"
+            android:icon="@drawable/ic_health"
+            android:title="@string/menuItemHealth"
+            android:iconTint="@color/colorPrimaryComplementary"/>
+
+    </group>
+
+    <item android:title="@string/menuItemInformation">
+        <menu>
+
+            <item
+                android:id="@+id/menu_item_impressum"
+                android:icon="@drawable/ic_person"
+                android:title="Impressum"
+                android:iconTint="@color/colorPrimaryComplementary"/>
+            <item
+                android:id="@+id/menu_item_About"
+                android:icon="@drawable/ic_about"
+                android:title="About"
+                android:iconTint="@color/colorPrimaryComplementary"/>
+        </menu>
+    </item>
+
+
+</menu>

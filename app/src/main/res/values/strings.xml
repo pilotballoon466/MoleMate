@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">MoleMate</string>
+    <string name="btnTakePic">Mache ein Foto!</string>
+    <string name="toolbarTakePic">Mache ein Foto</string>
+    <string name="menuItemTakePic">CancerFree</string>
+    <string name="nav_opening">NavigationDrawer open</string>
+    <string name="nav_closing">NavigationDrawer closing</string>
+    <string name="home">Home</string>
+    <string name="menuItemHealth">Gesundheitsdaten</string>
+    <string name="menuItemInformation">Zusätzliche Informationen</string>
+    <string name="app_description">Diese App wurde im Rahmen der Masterarbeit von Bastian Kamp geschrieben!</string>
+    <string name="toDiagnosis">Starte Diagnose</string>
+    <string name="diagnosis">Diagnose</string>
+    <string name="back">Zurück</string>
+    <string name="save">Speichern</string>
+    <string name="buttonBack">Rückseite</string>
+    <string name="buttonFront">Vorderseite</string>
+    <string name="fragment_saveHeader">Möchtest du die Diagnose speichern?</string>
+    <string name="bodyPartHeader">Lage der Hautläsion</string>
+    <string name="goOn">Weiter</string>
+    <string name="fragment_descrip_body_image">Body for mole position picking</string>
+    <string name="fragment_descrip_colored_body_image">Colored Body for mole position picking</string>
+    <string name="fileStructureButtonText">Dein Archive</string>
+    <string name="takeMolePicButtonText">Neue Aufnahme</string>
+    <string name="cancerCheckerClass">HealthMate</string>
+    <string name="upperBody">Oberkörper</string>
+    <string name="head">Kopf</string>
+    <string name="arms">Arme</string>
+    <string name="legs">Beine</string>
+
+
+
 </resources>

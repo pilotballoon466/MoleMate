@@ -15,13 +15,11 @@ import com.master.molemate.RoomDB.Entities.Entity_Users;
 import java.util.List;
 
 //TODO: Need a LoginScreen and a LoginProcess!
-public class MoleMateDB_ViewModel extends ViewModel {
+public class MoleMateDB_ViewModel extends AndroidViewModel {
 
     private static final String TAG = "MoleUserViewModel_For_D";
 
     private MoleMateDB_Repository repository;
-    private Entity_Users user;
-    private LiveData<List<EntityMix_User_MoleLib>> allMolesFromUser;
 
     private SharedPreferences sharedPrefMiniDB;
 
@@ -31,16 +29,16 @@ public class MoleMateDB_ViewModel extends ViewModel {
     /*
         Constructor
      */
-    public MoleMateDB_ViewModel(MoleMateDB_Repository repository) {
+    public MoleMateDB_ViewModel(Application application) {
+        super(application);
 
         //sharedPrefMiniDB = application.getApplicationContext().getSharedPreferences("UserPref", 0); // 0 for private mode
 
-        this.repository = repository;
+        this.repository = new MoleMateDB_Repository(application);
     }
 
     public LiveData<List<Entity_Users>> getAllUsers(){
-        LiveData<List<Entity_Users>> users = repository.getAllUsers();
-        return users;
+        return repository.getAllUsers();
     }
 
     public void insertUser(Entity_Users user_Entry){
@@ -52,6 +50,14 @@ public class MoleMateDB_ViewModel extends ViewModel {
     }
 
     public LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
-        return repository.getAllMolesOfUser(uid);
+        return repository.getAllMolesFromUser(uid);
+    }
+
+    public void deleteMole(Entity_Mole_Library moleEntry){
+        repository.deleteMole(moleEntry);
+    }
+
+    public void deleteUser(Entity_Users user){
+        repository.deleteUser(user);
     }
 }

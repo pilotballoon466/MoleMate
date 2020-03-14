@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ImageFileStorage.ImageFileArchive"
+            android:parentActivityName=".ChooseActionScreen"/>
+        <activity android:name=".ChooseActionScreen" />
+        <activity android:name=".SignInProcess.SignInActivity" />
+        <activity android:name=".LoginProcess.LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

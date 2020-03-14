@@ -36,21 +36,29 @@ public class MoleMateDB_Repository {
     private static Entity_Users defaultUser;
     private static Entity_Users currentUser;
     private LiveData<List<Entity_Users>> users;
+    private LiveData<List<EntityMix_User_MoleLib>> moleLibFromUser;
     private static int uid;
 
-    public MoleMateDB_Repository(MoleMateDB moleMateDB) {
+    public MoleMateDB_Repository(Application application) {
+        MoleMateDB moleMateDB = MoleMateDB.getInstance(application);
         moleLibDao = moleMateDB.moleLibDAO();
         userDao = moleMateDB.usersDAO();
 
         users = userDao.getAllUser();
-
     }
 
     public void insertUser(Entity_Users userEntry){
         new InsertUserAsyncTask(userDao).execute(userEntry);
     }
 
+    public void deleteUser(Entity_Users user){
+        new DeleteUserAsyncTask(userDao).execute(user);
+    }
+
     public LiveData<List<Entity_Users>> getAllUsers(){
+        if(users == null){
+            users = userDao.getAllUser();
+        }
         return users;
     }
 
@@ -58,8 +66,14 @@ public class MoleMateDB_Repository {
         new InsertMoleAsyncTask(moleLibDao).execute(moleLib_entry);
     }
 
-    public LiveData<List<EntityMix_User_MoleLib>> getAllMolesOfUser(int uid){
-        return moleLibDao.getAllMolesFromUser(uid);
+    public void deleteMole(Entity_Mole_Library moleLib_entry){
+        new DeleteMoleAsyncTask(moleLibDao).execute(moleLib_entry);
+    }
+
+    public LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
+        //TODO: sollte nur einmal zugewiesen werden!
+        moleLibFromUser = moleLibDao.getAllMolesFromUser(uid);
+        return moleLibFromUser;
     }
 
     private static class InsertUserAsyncTask extends AsyncTask<Entity_Users,Void,Void>{
@@ -85,9 +99,35 @@ public class MoleMateDB_Repository {
         }
     }
 
+    private static class DeleteUserAsyncTask extends AsyncTask<Entity_Users,Void,Void>{
+
+        private DAO_Interface_Users userDao;
+        private String userName;
+
+        private DeleteUserAsyncTask(DAO_Interface_Users userDao) {
+            this.userDao = userDao;
+
+        }
+
+        @Override
+        protected Void doInBackground(Entity_Users... entity_users) {
+            userName = entity_users[0].getUserName();
+            userDao.delete(entity_users[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.d(TAG, "onPostExecute: deleted user" + userName);
+        }
+    }
+
     private static class InsertMoleAsyncTask extends AsyncTask<Entity_Mole_Library,Void,Void>{
 
         private DAO_Interface_Mole_Library moleLibDao;
+        private String moleUri;
 
         private InsertMoleAsyncTask(DAO_Interface_Mole_Library moleLibDao){
             this.moleLibDao = moleLibDao;
@@ -95,8 +135,40 @@ public class MoleMateDB_Repository {
 
         @Override
         protected Void doInBackground(Entity_Mole_Library... entity_mole_libraries) {
+            moleUri = entity_mole_libraries[0].getMoleImageUri();
             moleLibDao.insert(entity_mole_libraries[0]);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.d(TAG, "onPostExecute: Inserted Mole " + moleUri);
+        }
+    }
+
+    private static class DeleteMoleAsyncTask extends AsyncTask<Entity_Mole_Library,Void,Void>{
+
+        private DAO_Interface_Mole_Library moleLibDao;
+        private String moleUri;
+
+        private DeleteMoleAsyncTask(DAO_Interface_Mole_Library moleLibDao){
+            this.moleLibDao = moleLibDao;
+        }
+
+        @Override
+        protected Void doInBackground(Entity_Mole_Library... entity_mole_libraries) {
+            moleUri = entity_mole_libraries[0].getMoleImageUri();
+            moleLibDao.delete(entity_mole_libraries[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.d(TAG, "onPostExecute: Deleted Mole " + moleUri);
         }
     }
 }
