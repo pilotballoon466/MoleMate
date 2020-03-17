@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:weightSum="20"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logoTakePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="19" />
+
+    <Button
+        android:id="@+id/btnTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:onClick="btnTakePic"
+        android:text="@string/btnTakePic"
+        android:textColor="@color/btnTextColor"
+        android:textSize="9pt"
+        android:theme="@android:style/Widget.Button"
+        android:layout_margin="9sp"
+        android:padding="10sp"
+        />
+
+</LinearLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bodyPositionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="20">
+
+        <LinearLayout
+            android:id="@+id/layout_back_or_front"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+
+            <TextView
+                android:id="@+id/butto_front_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/buttonFront"
+                android:textAlignment="center"
+                android:textColor="@color/btnTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/button_back_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/box_borders"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/buttonBack"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="17">
+
+            <ImageView
+                android:id="@+id/fragment_body_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/body_man_black_big"
+                android:contentDescription="@string/fragment_descrip_body_image"/>
+
+            <ImageView
+                android:id="@+id/fragment_colored_body_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/colored_big_body_man"
+                android:visibility="invisible"
+                android:contentDescription="@string/fragment_descrip_colored_body_image"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/fragment_clicked_body_part"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/box_borders"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/toDiagnosis"
+            android:textColor="@color/btnTextColor" />
+
+    </LinearLayout>
+
+</ScrollView>

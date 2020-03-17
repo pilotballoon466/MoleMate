@@ -1,4 +1,4 @@
-package com.master.molemate.ImageFileStorage;
+package com.master.molemate.DiagnosisTool;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -6,56 +6,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
-import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.ChooseActionScreen;
-import com.master.molemate.ImageFileStorage.SupporterClasses.ViewModel_ImageArchive_Communication;
-import com.master.molemate.LoginProcess.LoginActivity;
+import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Check_Image;
+import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Determine_Mole_Position;
+import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Diagnosis;
+import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Save_Mole_Diagnosis;
+import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Take_Picture;
+import com.master.molemate.ImageFileStorage.Fragment_Selected_BodyPart_Archive;
 import com.master.molemate.R;
-import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
-import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
-import java.util.List;
+public class Diagnosis_Tool extends AppCompatActivity {
 
-public class ImageFileArchive extends AppCompatActivity {
+    private static final String TAG = "Diagnosis_Tool";
 
-    private static final String TAG = "ImageFileArchive";
+    ViewPager fragmentContainer;
+    DiagnosisStatePageAdapter adapter;
 
-    public static final String SELECTED_BODYPART = "selected_bodyPart";
-    public static final String SELECT_A_BODYPART = "select_a_bodyPart";
-
-
-    NavigationView mainMenu;
-    ActionBarDrawerToggle toggle;
-    Toolbar toolbar;
-    MoleMateFragmentStatePagerAdapter adapter;
-    ViewPager fragmentContainerArchive;
     DrawerLayout drawer;
-
-    public int currentUser;
-
-    private ViewModel_ImageArchive_Communication fragmentViewModelCom;
-    private MoleMateDB_ViewModel dbCom;
-    private List<EntityMix_User_MoleLib> moleLibCurrentUser;
+    ActionBarDrawerToggle toggle;
     private boolean mToolBarNavigationListenerIsRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_file_storage);
+        setContentView(R.layout.activity_diagnosis_tool);
 
         //Creating Menu
-        mainMenu = findViewById(R.id.mainMenu);
+        NavigationView mainMenu = findViewById(R.id.mainMenu);
         mainMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -67,10 +55,9 @@ public class ImageFileArchive extends AppCompatActivity {
         mainMenu.setItemIconTintList(null);
 
         //Adding Toolbar and Title to Toolbar
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
-
 
         //Adding the Burgermenu to Toolbar
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -79,44 +66,37 @@ public class ImageFileArchive extends AppCompatActivity {
         toggle.syncState();
 
         //Creating FragmentAdapter - Handler for Fragments + Creating ViewPager
-        fragmentContainerArchive = findViewById(R.id.fragment_container_image_archive);
+        fragmentContainer = findViewById(R.id.container_cancer_free);
 
-        //Create Com Tool for ArchiveFragments
-        fragmentViewModelCom = new ViewModelProvider(this).get(ViewModel_ImageArchive_Communication.class);
-
-        currentUser = getIntent().getIntExtra("currentUser", 0);
-
-        addFragmentsToViewPager();
-
+        setFragmentsInViewPagerAdapter();
         selectFragmentToShow(0);
 
-        dbCom = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
-        dbCom.getAllMolesFromUser(currentUser).observe(this, new Observer<List<EntityMix_User_MoleLib>>() {
+        //Dismiss Swiping between fragments
+        fragmentContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
-                fragmentViewModelCom.setUserMoleLib(entityMix_user_moleLibs);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
             }
         });
-
 
     }
 
     public void selectFragmentToShow(int fragmentID) {
-        fragmentContainerArchive.setCurrentItem(fragmentID);
+        fragmentContainer.setCurrentItem(fragmentID);
     }
 
     public void selectFragmentToShowWithTitle(String title){
-        fragmentContainerArchive.setCurrentItem(adapter.getItemWithTitle(title));
+        fragmentContainer.setCurrentItem(adapter.getItemWithTitle(title));
     }
 
-
-    private void addFragmentsToViewPager() {
-        adapter = new MoleMateFragmentStatePagerAdapter(getSupportFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(new Fragment_SelectBodyPart(), SELECT_A_BODYPART);
-        adapter.addFragment(new Fragment_Selected_BodyPart_Archive(), SELECTED_BODYPART);
-
-        fragmentContainerArchive.setAdapter(adapter);
+    private void setFragmentsInViewPagerAdapter(){
+        adapter = new DiagnosisStatePageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new Fragment_Take_Picture(), "take_picture");
+        adapter.addFragment(new Fragment_Check_Image(), "check_Image");
+        adapter.addFragment(new Fragment_Determine_Mole_Position(), "body_position");
+        adapter.addFragment(new Fragment_Diagnosis(), "diagnosis");
+        adapter.addFragment(new Fragment_Save_Mole_Diagnosis(), "check_and_save");
+        fragmentContainer.setAdapter(adapter);
     }
 
     private void onItemSelected(MenuItem menuItem) {
@@ -138,18 +118,15 @@ public class ImageFileArchive extends AppCompatActivity {
                 intent = new Intent(this, ChooseActionScreen.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_logout:
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                break;
             default:
                 break;
         }
     }
 
+
     @Override
     public void onBackPressed() {
-        int currentFragmentID = fragmentContainerArchive.getCurrentItem();
+        int currentFragmentID = fragmentContainer.getCurrentItem();
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
         else if (currentFragmentID >0) {
@@ -195,4 +172,14 @@ public class ImageFileArchive extends AppCompatActivity {
         toggle.setDrawerIndicatorEnabled(b);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        return true;
+    }
+
+    public void btnTakePic(View view) {
+
+    }
 }

@@ -28,12 +28,17 @@
             <item
                 android:id="@+id/menu_item_impressum"
                 android:icon="@drawable/ic_person"
-                android:title="Impressum"
+                android:title="@string/impressum"
                 android:iconTint="@color/colorPrimaryComplementary"/>
             <item
                 android:id="@+id/menu_item_About"
                 android:icon="@drawable/ic_about"
                 android:title="About"
+                android:iconTint="@color/colorPrimaryComplementary"/>
+            <item
+                android:id="@+id/menu_item_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/logout"
                 android:iconTint="@color/colorPrimaryComplementary"/>
         </menu>
     </item>

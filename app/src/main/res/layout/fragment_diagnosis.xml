@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fragment_diagnosisHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/diagnosis"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/fragment_diagnosis_mole_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_diagnosisHeader"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/body_man_black_big" />
+
+        <TextView
+            android:id="@+id/fragment_diagnosis_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_diagnosis_mole_image" />
+
+        <Button
+            android:id="@+id/fragment_go_to_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_diagnosis_text"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="12dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textColor="@color/btnTextColor" />
+
+    </RelativeLayout>
+</ScrollView>

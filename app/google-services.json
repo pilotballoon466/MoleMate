@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "785723224064",
+    "firebase_url": "https://molemate-ff3c9.firebaseio.com",
+    "project_id": "molemate-ff3c9",
+    "storage_bucket": "molemate-ff3c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785723224064:android:a30f567c64b1c7c00ca8e5",
+        "android_client_info": {
+          "package_name": "com.master.molemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785723224064-u4d2u4au8k5t375p2t78rgko5dbunikm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6GVrjGtaS41bVY-V6s_vnqXP4hP9Hww8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785723224064-u4d2u4au8k5t375p2t78rgko5dbunikm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

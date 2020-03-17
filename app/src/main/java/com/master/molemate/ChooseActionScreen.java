@@ -17,7 +17,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import com.google.android.material.navigation.NavigationView;
 
+import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.ImageFileStorage.ImageFileArchive;
+import com.master.molemate.LoginProcess.LoginActivity;
 
 public class ChooseActionScreen extends AppCompatActivity {
 
@@ -66,7 +68,7 @@ public class ChooseActionScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ImageFileArchive.class);
-                int uid = getIntent().getIntExtra("currentUser",0);
+                int uid = getIntent().getIntExtra("currentUser",1);
                 intent.putExtra("currentUser", uid );
                 startActivity(intent);
             }
@@ -75,7 +77,9 @@ public class ChooseActionScreen extends AppCompatActivity {
         makePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ChooseActionScreen.class);
+                Intent intent = new Intent(getApplicationContext(), Diagnosis_Tool.class);
+                int uid = getIntent().getIntExtra("currentUser",1);
+                intent.putExtra("currentUser", uid );
                 startActivity(intent);
             }
         });
@@ -98,6 +102,10 @@ public class ChooseActionScreen extends AppCompatActivity {
                 break;
             case R.id.menu_item_cancer_free:
                 intent = new Intent(this, ChooseActionScreen.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_logout:
+                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
             default:

@@ -27,7 +27,17 @@
     <string name="head">Kopf</string>
     <string name="arms">Arme</string>
     <string name="legs">Beine</string>
-
+    <string name="password">Passwort</string>
+    <string name="login">Anmelden</string>
+    <string name="signIn">Registieren</string>
+    <string name="mail">Email</string>
+    <string name="error_invalid_email">Die Email Adresse scheint nicht zu stimmen</string>
+    <string name="error_field_required">Es fehlen Angaben</string>
+    <string name="error_mails_not_equals">Die Email Adressen stimmen nicht überein</string>
+    <string name="error_invalid_password">Das Passwort entspricht nicht den Vorgaben</string>
+    <string name="mail_confirmation">Email (wiederholen)</string>
+    <string name="impressum">Impressum</string>
+    <string name="logout">Abmelden</string>
 
 
 </resources>
