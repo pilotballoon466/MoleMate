@@ -103,7 +103,7 @@ public class Diagnosis_Tool extends AppCompatActivity {
         Intent intent;
         switch (menuItem.getItemId()){
             case R.id.menu_item_home:
-                intent = new Intent(this, ChooseActionScreen.class);
+                intent = new Intent(this, HomeScreen.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_impressum:

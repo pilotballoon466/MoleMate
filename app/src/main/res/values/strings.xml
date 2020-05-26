@@ -38,6 +38,8 @@
     <string name="mail_confirmation">Email (wiederholen)</string>
     <string name="impressum">Impressum</string>
     <string name="logout">Abmelden</string>
+    <string name="uv_faktor">4</string>
+    <string name="skincancerinfoheader">Informationen zu Hautkrebsvorsorge</string>
 
 
 </resources>

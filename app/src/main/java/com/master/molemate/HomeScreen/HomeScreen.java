@@ -1,4 +1,4 @@
-package com.master.molemate;
+package com.master.molemate.HomeScreen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,30 +10,32 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
+
 import com.google.android.material.navigation.NavigationView;
-
-import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
-import com.master.molemate.HomeScreen.HomeScreen;
-import com.master.molemate.ImageFileStorage.ImageFileArchive;
+import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.LoginProcess.LoginActivity;
+import com.master.molemate.R;
 
-public class ChooseActionScreen extends AppCompatActivity {
+import java.io.IOException;
 
-    private static final String TAG = "ChooseActionScreen";
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
-    ImageButton fileStorageButton;
-    ImageButton makePicButton;
+
+public class HomeScreen extends AppCompatActivity {
+
+    private static final String TAG = "HomeScreen";
+
+    OkHttpClient client = new OkHttpClient();
     DrawerLayout drawer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_action_screen);
+        setContentView(R.layout.activity_home_screen);
 
         //Creating Menu
         NavigationView mainMenu = findViewById(R.id.mainMenu);
@@ -58,32 +60,13 @@ public class ChooseActionScreen extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        settingUpImageButtons();
-    }
+        String url = "https://api.openuv.io/api/v1/uv?lat=-33.34&lng=115.342&dt=2018-01-24T10%3A50%3A52.283Z";
 
-    private void settingUpImageButtons() {
-        fileStorageButton = (ImageButton) findViewById(R.id.fileStructureButton);
-        makePicButton = (ImageButton) findViewById(R.id.takeMolePicButton);
 
-        fileStorageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ImageFileArchive.class);
-                int uid = getIntent().getIntExtra("currentUser",1);
-                intent.putExtra("currentUser", uid );
-                startActivity(intent);
-            }
-        });
 
-        makePicButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Diagnosis_Tool.class);
-                int uid = getIntent().getIntExtra("currentUser",1);
-                intent.putExtra("currentUser", uid );
-                startActivity(intent);
-            }
-        });
+        UVCall uvCall = new UVCall(url);
+        uvCall.start();
+
     }
 
     private void onItemSelected(MenuItem menuItem) {
@@ -124,22 +107,31 @@ public class ChooseActionScreen extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        return true;
+    public class UVCall extends Thread {
+
+        private String url;
+
+        public UVCall(String url) {
+            this.url = url;
+        }
+
+        public void run() {
+            Request request = new Request.Builder()
+                    .header("x-access-token", "bee4d16f4445fabd564ea59ffb53ca0b")
+                    .url(url)
+                    .build();
+
+            try (okhttp3.Response response = client.newCall(request).execute()) {
+                Log.i(TAG, response.body().string());
+            }catch (IOException ex){
+                Log.d(TAG, "run: " + ex.getMessage());
+            }
+        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: We're back!");
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: We're dead");
 
-    }
+
+
+
 }

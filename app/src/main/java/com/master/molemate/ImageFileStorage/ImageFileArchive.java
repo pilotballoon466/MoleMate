@@ -19,6 +19,7 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.ChooseActionScreen;
+import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.ImageFileStorage.SupporterClasses.ViewModel_ImageArchive_Communication;
 import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.R;
@@ -123,7 +124,7 @@ public class ImageFileArchive extends AppCompatActivity {
         Intent intent;
         switch (menuItem.getItemId()){
             case R.id.menu_item_home:
-                intent = new Intent(this, ChooseActionScreen.class);
+                intent = new Intent(this, HomeScreen.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_impressum:

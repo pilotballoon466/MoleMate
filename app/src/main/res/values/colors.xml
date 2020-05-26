@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2c6237</color>
-    <color name="colorPrimaryDark">#265530</color>
-    <color name="colorPrimaryLight">#408B4F</color>
-    <color name="colorPrimaryComplementary">#FFC800</color>
-    <color name="colorAccent">#BD4030</color>
-    <color name="buttonColor">#2c6237</color>
+    <color name="colorPrimary">#1C49B6</color>
+    <color name="colorPrimaryDark">#192951</color>
+    <color name="colorPrimaryLight">#365BB7</color>
+    <color name="colorPrimaryComplementary">#365BB7</color>
+    <color name="colorAccent">#192951</color>
+    <color name="buttonColor">#192951</color>
     <color name="btnTextColor">#FFFFFF</color>
     <color name="blackText">#000000</color>
 </resources>
