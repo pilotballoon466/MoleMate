@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryLight"
+    android:padding="6dp"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/uv_index_info_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/sun_uv_index"
+            android:layout_width="110dp"
+            android:layout_height="81dp"
+            app:srcCompat="@drawable/sunny"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/uv_index_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/sun_uv_index"
+            android:text="@string/uv_index"
+            android:textColor="@color/btnTextColor"
+            android:textSize="35sp"
+            android:layout_centerVertical="true"/>
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/btnTextColor"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/uv_index_low_risk_layout"
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <ImageView
+            android:id="@+id/sun_uv_index_low_risk"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/sunny"
+            android:layout_marginTop="12dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/uv_index_low_risk_text"
+            android:layout_marginStart="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/sun_uv_index_low_risk"
+            android:text="@string/uv_index_low_risk"
+            android:textColor="@color/btnTextColor"
+            android:textSize="12sp"/>
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/btnTextColor"
+        />
+
+    <Button
+        android:id="@+id/moreInfoBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/more_information"
+        android:layout_margin="12dp"
+        android:background="@drawable/buttonpopup_style"
+        android:textColor="@color/btnTextColor"
+        android:textSize="20sp"/>
+
+
+
+</LinearLayout>

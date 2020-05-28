@@ -33,7 +33,7 @@
             >
 
             <ImageView
-                android:id="@+id/wheatherIcon"
+                android:id="@+id/weatherIcon"
                 android:layout_width="148dp"
                 android:layout_height="169dp"
                 android:layout_alignParentStart="true"
@@ -64,22 +64,23 @@
                 android:id="@+id/uv_index_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="UV-Faktor"
+                android:text="@string/uv_index"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
-
                 />
             <TextView
                 android:id="@+id/uv_index"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/uv_index_header"
-                android:text="@string/uv_faktor"
+                android:text="-"
                 android:textSize="90sp"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimaryLight"/>
+                android:textColor="@color/colorPrimaryLight"
+                android:clickable="true"
+                android:onClick="getIndexInfo"/>
         </RelativeLayout>
 
         <View

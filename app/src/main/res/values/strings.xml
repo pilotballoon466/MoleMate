@@ -40,6 +40,18 @@
     <string name="logout">Abmelden</string>
     <string name="uv_faktor">4</string>
     <string name="skincancerinfoheader">Informationen zu Hautkrebsvorsorge</string>
+    <string name="uv_index">UV-Index</string>
+    <string name="more_information">Weitere Informationen</string>
+
+    <string name="uv_index_low_risk">Bei einem Index zwischen 0-2 sind keine Schutzmaßnahmen erforderlich.</string>
+    <string name="uv_index_mid_risk">Bei einem Index zwischen 3-7 sind Schutzmaßnahmen erforderlich.
+        Sonnencreme mit ausreichendem Schutzfaktor und halte dich nach Möglichkeit im Schatten auf.
+    </string>
+    <string name="uv_index_high_risk">Bei einem Index ab 8 sind Schutzmaßnahmen zwingend erforderlich.
+        Nutze Sonnencreme mit ausreichendem Schutzfaktor und gehe nach Möglichkleit nicht nach draußen.
+    </string>
+
+
 
 
 </resources>
