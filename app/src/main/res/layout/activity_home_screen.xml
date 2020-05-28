@@ -94,24 +94,208 @@
 
     </RelativeLayout>
 
-     <RelativeLayout
+     <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         android:id="@+id/relLayout"
+         android:id="@+id/linLayForGrid"
          android:layout_margin="8dp"
+         android:orientation="vertical"
+         android:weightSum="10"
          >
 
-         <TextView
-             android:id="@+id/skincancerinformationheader"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="@string/skincancerinfoheader"
-             android:textStyle="bold"
-             android:textSize="16dp"
-             android:textAlignment="center"
-             android:textColor="@color/colorPrimaryDark"/>
 
-     </RelativeLayout>
+         
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="1"
+             >
+             <TextView
+                 android:id="@+id/skincancerinformationheader"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/skincancerinfoheader"
+                 android:textStyle="bold"
+                 android:textSize="16sp"
+                 android:textAlignment="center"
+                 android:textColor="@color/colorPrimaryDark"/>
+
+         </RelativeLayout>
+         
+         <GridLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:columnCount="2"
+             android:rowCount="2"
+             android:layout_weight="8"
+             android:alignmentMode="alignMargins"
+             android:columnOrderPreserved="false"
+             android:padding="14dp">
+
+             <!-- Row 1 -->
+
+                <!-- Column 1 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardviewDiag"
+                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardElevation="8dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="goToActivity"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/mole_mate_logo"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="@string/diagnosis"
+                            android:hint="@string/diagnosis"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- Column 2 -->
+             <androidx.cardview.widget.CardView
+                 android:id="@+id/cardviewStor"
+                 android:layout_height="0dp"
+                 android:layout_width="0dp"
+                 android:layout_columnWeight="1"
+                 android:layout_rowWeight="1"
+                 android:layout_marginBottom="16dp"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginEnd="16dp"
+                 app:cardElevation="8dp"
+                 app:cardCornerRadius="8dp"
+                 android:clickable="true"
+                 android:focusable="true"
+                 android:onClick="goToActivity"
+                 >
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_horizontal|center_vertical"
+                     android:layout_margin="16dp"
+                     android:orientation="vertical">
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_horizontal"
+                         android:src="@drawable/ic_folder"/>
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textAlignment="center"
+                         android:text="@string/diagnosis"/>
+
+                 </LinearLayout>
+
+             </androidx.cardview.widget.CardView>
+
+
+             <!-- Row 2 -->
+
+                 <!-- Column 1 -->
+             <androidx.cardview.widget.CardView
+                 android:id="@+id/cardviewTele"
+                 android:layout_height="0dp"
+                 android:layout_width="0dp"
+                 android:layout_columnWeight="1"
+                 android:layout_rowWeight="1"
+                 android:layout_marginBottom="16dp"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginEnd="16dp"
+                 app:cardElevation="8dp"
+                 app:cardCornerRadius="8dp"
+                 android:clickable="true"
+                 android:focusable="true"
+                 android:onClick="goToActivity"
+                 >
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_horizontal|center_vertical"
+                     android:layout_margin="16dp"
+                     android:orientation="vertical">
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_horizontal"
+                         android:src="@drawable/ic_health"/>
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textAlignment="center"
+                         android:text="@string/diagnosis"/>
+
+                 </LinearLayout>
+
+             </androidx.cardview.widget.CardView>
+
+
+             <!-- Column 2 -->
+             <androidx.cardview.widget.CardView
+                 android:id="@+id/cardviewPrev"
+                 android:layout_height="0dp"
+                 android:layout_width="0dp"
+                 android:layout_columnWeight="1"
+                 android:layout_rowWeight="1"
+                 android:layout_marginBottom="16dp"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginEnd="16dp"
+                 app:cardElevation="8dp"
+                 app:cardCornerRadius="8dp"
+                 android:clickable="true"
+                 android:focusable="true"
+                 android:onClick="goToActivity"
+                 >
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_horizontal|center_vertical"
+                     android:layout_margin="16dp"
+                     android:orientation="vertical">
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_horizontal"
+                         android:src="@drawable/ic_prev"/>
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textAlignment="center"
+                         android:text="@string/diagnosis"/>
+
+                 </LinearLayout>
+
+             </androidx.cardview.widget.CardView>
+
+
+         </GridLayout>
+
+
+
+
+     </LinearLayout>
+
 
 
     </LinearLayout>

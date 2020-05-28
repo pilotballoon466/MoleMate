@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.ChooseActionScreen;
@@ -94,6 +97,16 @@ public class HomeScreen extends AppCompatActivity {
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) (width * 0.1));
         infoText.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) (width * 0.04));
         moreInfoBut.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) (width * 0.04));
+
+        moreInfoBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("https://www.bfs.de/DE/themen/opt/uv/uv-index/einfuehrung/" +
+                        "einfuehrung.html;jsessionid=E91F0603C8CFB3883E3638000FC19AC0.1_cid339"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
         if (uvIndexInt < 3) {
             infoText.setText(R.string.uv_index_low_risk);
@@ -172,6 +185,32 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
+    public void goToActivity(View view) {
+
+        CardView diagnosisCardview = findViewById(R.id.cardviewDiag);
+        CardView storageCardview = findViewById(R.id.cardviewStor);
+        CardView telemedCardview = findViewById(R.id.cardviewTele);
+        CardView prevCardview = findViewById(R.id.cardviewPrev);
+
+        Intent intent;
+
+        switch (view.getId()){
+            case R.id.cardviewDiag :
+                Toast.makeText(this, "Dialog",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.cardviewStor :
+                Toast.makeText(this, "Storage",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.cardviewTele :
+                Toast.makeText(this, "Tele",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.cardviewPrev :
+                Toast.makeText(this, "Prev",Toast.LENGTH_LONG).show();
+                break;
+        }
+
+    }
+
 
     public class UVCall extends Thread {
 
@@ -195,7 +234,6 @@ public class HomeScreen extends AppCompatActivity {
 
             UVCrawlerAsyncTask uvCrawlerAsyncTask = new UVCrawlerAsyncTask(url);
             uvCrawlerAsyncTask.execute();
-
 
         }
     }
