@@ -2,6 +2,8 @@ package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.SimpleDateFormat;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,37 +32,39 @@ import com.master.molemate.R;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.Objects;
 
 public class Fragment_Take_Picture extends Fragment {
 
     private static final String TAG = "Fragment_Take_Picture";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int TAKE_PHOTO = 1;
+    private static final int RESULT_LOAD_IMG = 2;
 
+    private Date dateOfCreation = new Date();
+    private String timeStamp;
 
     private Diagnosis_SharedViewModel viewModel;
     private MoleMateDB_ViewModel moleDBHandler;
 
-    private ImageView image;
     private String currentPhotoPath;
     private Uri moleImageUri;
-    private Button btnTakePic;
-    private Date dateOfCreation;
+    private CardView takePicCardV;
+    private CardView loadPicCardV;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_take_picture, container, false);
 
-        btnTakePic = (Button) layout.findViewById(R.id.btnTakePicture);
-        image = (ImageView) layout.findViewById(R.id.logoTakePic);
+        takePicCardV = layout.findViewById(R.id.cardviewTakePic);
+        loadPicCardV = layout.findViewById(R.id.cardviewLoadPic);
 
-        settingUpTakePicButton();
-
-        dispatchTakeMoleImage();
-
+        settingUpButtons();
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmsss").format(dateOfCreation);
         return layout;
     }
 
@@ -67,7 +72,7 @@ public class Fragment_Take_Picture extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        moleDBHandler = new ViewModelProvider(getActivity()).get(MoleMateDB_ViewModel.class);
+        moleDBHandler = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MoleMateDB_ViewModel.class);
 
         viewModel = new ViewModelProvider(getActivity()).get(Diagnosis_SharedViewModel.class);
         viewModel.getMoleImage().observe(getViewLifecycleOwner(), new Observer<Uri>() {
@@ -75,7 +80,7 @@ public class Fragment_Take_Picture extends Fragment {
             public void onChanged(@Nullable Uri uriMoleImage) {
 
                 if(uriMoleImage != null) {
-                    image.setImageURI(uriMoleImage);
+                    Toast.makeText(getActivity(), "Es ist bereits ein Bild aufgenommen worden.", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(), "Es konnte kein Bild gefunden werden.", Toast.LENGTH_SHORT).show();
                 }
@@ -87,27 +92,56 @@ public class Fragment_Take_Picture extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == TAKE_PHOTO) {
-                image.setImageURI(moleImageUri);
-
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                //image.setImageURI(moleImageUri);
                 Log.d(TAG, "onActivityResult: moleImageUri" + moleImageUri);
                 viewModel.setMoleImage(moleImageUri);
                 Log.d(TAG, "onActivityResult: dateOfCreation" + dateOfCreation.toString());
                 viewModel.setMoleImageCreationDate(dateOfCreation);
                 viewModel.setMoleUserViewModel(moleDBHandler);
+                ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.CHECK_IMAGE);
 
-                ((Diagnosis_Tool)getActivity()).selectFragmentToShow(1);
+
+            } else if (requestCode == RESULT_LOAD_IMG) {
+
+                final Uri imageUri = data.getData();
+
+                if(imageUri != null){
+                    Log.d(TAG, "onActivityResult: moleImageUri" + imageUri);
+                    viewModel.setMoleImage(imageUri);
+                    Log.d(TAG, "onActivityResult: dateOfCreation" + dateOfCreation.toString());
+                    viewModel.setMoleImageCreationDate(dateOfCreation);
+                    viewModel.setMoleUserViewModel(moleDBHandler);
+                    ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.CHECK_IMAGE);
+                } else {
+                    Toast.makeText(getActivity(), "Du hast wohl kein Bild ausgewählt",Toast.LENGTH_LONG).show();
+                }
+
+            }else {
+                Toast.makeText(getActivity(), "Da ist ein Fehler aufgetreten, versuche es bitte nochmal",Toast.LENGTH_LONG).show();
             }
+
         }
         //image.setImageURI(moleImageUri);
     }
 
 
-    private void settingUpTakePicButton() {
-        btnTakePic.setOnClickListener(new View.OnClickListener() {
+    private void settingUpButtons() {
+        takePicCardV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dispatchTakeMoleImage();
+            }
+        });
 
+        loadPicCardV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Es ist bereits ein Bild aufgenommen worden.", Toast.LENGTH_SHORT).show();
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
             }
         });
     }
@@ -117,7 +151,7 @@ public class Fragment_Take_Picture extends Fragment {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (cameraIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             File moleImageFile = null;
 
             try {
@@ -157,16 +191,14 @@ public class Fragment_Take_Picture extends Fragment {
 
     private File createImageFile() throws IOException, NullPointerException {
 
-        dateOfCreation = new Date();
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmsss").format(dateOfCreation);
         String moleImageFileName = "MOLE_" + timeStamp + "_";
 
 
         //TODO what is @notNullable or @Nullable
-        File storageMoleDir = ((Diagnosis_Tool)getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageMoleDir = ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        Log.d(TAG, "createImageFile: storeMoleDir " + storageMoleDir.getAbsolutePath());
+        Log.d(TAG, "createImageFile: storeMoleDir " + Objects.requireNonNull(storageMoleDir).getAbsolutePath());
         Log.d(TAG, "createImageFile: moleImageFileName " + moleImageFileName);
 
         File moleImageFile = new File(""+storageMoleDir+"/"+moleImageFileName+".jpg");

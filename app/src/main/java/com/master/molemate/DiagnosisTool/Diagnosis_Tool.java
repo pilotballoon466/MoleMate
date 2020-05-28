@@ -77,6 +77,7 @@ public class Diagnosis_Tool extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
             }
+
         });
 
     }

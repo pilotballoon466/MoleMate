@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toolbar;
 
+import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.RoomDB.DAO_Interfaces.DAO_Interface_Mole_Library;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                Intent intent = new Intent(getApplicationContext(), ChooseActionScreen.class);
+                Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
                 intent.putExtra("currentUser", users.get(0).getUid());
                 startActivity(intent);
 

@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/molemate_launcher_ic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeScreen.HomeScreen"></activity>
+        <activity android:name=".TeleMed.TeleMed"></activity>
+        <activity android:name=".HomeScreen.HomeScreen" />
         <activity android:name=".DiagnosisTool.Diagnosis_Tool" />
         <activity
             android:name=".ImageFileStorage.ImageFileArchive"

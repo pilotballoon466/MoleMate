@@ -28,8 +28,11 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.ChooseActionScreen;
+import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
+import com.master.molemate.ImageFileStorage.ImageFileArchive;
 import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.R;
+import com.master.molemate.TeleMed.TeleMed;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -192,21 +195,31 @@ public class HomeScreen extends AppCompatActivity {
         CardView telemedCardview = findViewById(R.id.cardviewTele);
         CardView prevCardview = findViewById(R.id.cardviewPrev);
 
-        Intent intent;
+        Intent intent = null;
 
         switch (view.getId()){
             case R.id.cardviewDiag :
                 Toast.makeText(this, "Dialog",Toast.LENGTH_LONG).show();
+                intent = new Intent(this, Diagnosis_Tool.class);
                 break;
             case R.id.cardviewStor :
                 Toast.makeText(this, "Storage",Toast.LENGTH_LONG).show();
+                intent = new Intent(this, ImageFileArchive.class);
                 break;
             case R.id.cardviewTele :
                 Toast.makeText(this, "Tele",Toast.LENGTH_LONG).show();
+                intent = new Intent(this, TeleMed.class);
                 break;
             case R.id.cardviewPrev :
                 Toast.makeText(this, "Prev",Toast.LENGTH_LONG).show();
+                Uri uri = Uri.parse("https://www.kbv.de/media/sp/" +
+                        "Hautkrebs_Frueherkennung_Flyer_Druckvorlage_Deutsch.pdf"); // missing 'http://' will cause crashed
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 break;
+        }
+
+        if (intent != null) {
+            startActivity(intent);
         }
 
     }
@@ -242,7 +255,7 @@ public class HomeScreen extends AppCompatActivity {
 
         private String url;
 
-        public WeatherCall() {
+        WeatherCall() {
         }
 
         public void run() {
@@ -311,9 +324,9 @@ public class HomeScreen extends AppCompatActivity {
 
 
                     if (uvIndex <= 3) {
-                        uvIndexView.setTextColor(Color.BLUE);
-                    } else if (uvIndex <= 6 && uvIndex > 3) {
                         uvIndexView.setTextColor(Color.GREEN);
+                    } else if (uvIndex <= 6 && uvIndex > 3) {
+                        uvIndexView.setTextColor(Color.BLUE);
                     } else if (uvIndex <= 8 && uvIndex > 6) {
                         uvIndexView.setTextColor(Color.YELLOW);
                     } else if (uvIndex <= 11 && uvIndex > 8) {
