@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bodyPositionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,48 +11,53 @@
         android:orientation="vertical"
         android:weightSum="20">
 
-        <LinearLayout
+        <GridLayout
             android:id="@+id/layout_back_or_front"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:rowCount="1"
+            android:columnCount="2"
             android:orientation="horizontal"
-            android:weightSum="2"
             >
 
             <TextView
                 android:id="@+id/butto_front_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorPrimaryDark"
                 android:clickable="true"
                 android:focusable="true"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:text="@string/buttonFront"
                 android:textAlignment="center"
                 android:textColor="@color/btnTextColor"
+                android:gravity="center_vertical|center_horizontal"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/button_back_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@drawable/box_borders"
                 android:clickable="true"
                 android:focusable="true"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:text="@string/buttonBack"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
-        </LinearLayout>
+        </GridLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="17">
+            android:layout_weight="14">
 
             <ImageView
                 android:id="@+id/fragment_body_position"
@@ -76,11 +82,11 @@
             android:id="@+id/fragment_clicked_body_part"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:layout_weight="2"
             android:background="@drawable/box_borders"
             android:textAlignment="center"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:visibility="invisible" />
 
@@ -88,9 +94,9 @@
             android:id="@+id/button_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:layout_margin="8dp"
+            android:layout_weight="2"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:text="@string/toDiagnosis"
             android:textColor="@color/btnTextColor" />

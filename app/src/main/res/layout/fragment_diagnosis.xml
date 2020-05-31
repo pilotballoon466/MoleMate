@@ -1,49 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="8"
+    android:layout_margin="12dp">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="3">
 
-        <TextView
-            android:id="@+id/fragment_diagnosisHeader"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/diagnosis"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:id="@+id/diagnosis_mole_image_layout"
+            >
 
         <ImageView
             android:id="@+id/fragment_diagnosis_mole_image"
-            android:layout_width="wrap_content"
+            android:layout_width="148dp"
+            android:layout_height="169dp"
+            android:layout_margin="6dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/diagnosis_header_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/diagnosis_mole_image_layout"
+        android:gravity="center_vertical|center_horizontal"
+        >
+
+
+        <TextView
+            android:id="@+id/fragment_diagnosis_procent_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_diagnosisHeader"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="12dp"
-            android:src="@drawable/body_man_black_big" />
+            android:textSize="30sp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Gutartig"
+            />
+
+        <TextView
+            android:id="@+id/fragment_diagnosis_procent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_diagnosis_procent_header"
+            android:textSize="30sp"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="99.0"
+            android:textColor="@android:color/holo_green_light"
+            android:clickable="true"
+            android:onClick="getIndexInfo"
+            />
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:id="@+id/fragment_diagnosis_text_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="Deine Diagnose!"
+        />
+
+
 
         <TextView
             android:id="@+id/fragment_diagnosis_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_diagnosis_mole_image" />
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Dieses Muttermal ist gutartig!"
+            />
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:rowCount="1"
+        android:columnCount="2"
+        >
+        <Button
+            android:id="@+id/fragment_save_cancelButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/back"
+            android:textColor="@color/btnTextColor" />
         <Button
             android:id="@+id/fragment_go_to_save_button"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_diagnosis_text"
-            android:layout_alignParentBottom="true"
             android:layout_margin="12dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:text="@string/save"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
             android:textColor="@color/btnTextColor" />
+    </GridLayout>
 
-    </RelativeLayout>
-</ScrollView>
+
+</LinearLayout>

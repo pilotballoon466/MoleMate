@@ -10,7 +10,7 @@
     <string name="menuItemInformation">Zusätzliche Informationen</string>
     <string name="app_description">Diese App wurde im Rahmen der Masterarbeit von Bastian Kamp geschrieben!</string>
     <string name="toDiagnosis">Starte Diagnose</string>
-    <string name="diagnosis">Diagnose</string>
+    <string name="yourDiagnosis">Deine Diagnose</string>
     <string name="back">Zurück</string>
     <string name="save">Speichern</string>
     <string name="buttonBack">Rückseite</string>
@@ -39,7 +39,7 @@
     <string name="impressum">Impressum</string>
     <string name="logout">Abmelden</string>
     <string name="uv_faktor">4</string>
-    <string name="skincancerinfoheader">Informationen zu Hautkrebsvorsorge</string>
+    <string name="skincnacerTools">Deine persönlichen Hautkrebsvorsorge-Tools</string>
     <string name="uv_index">UV-Index</string>
     <string name="more_information">Weitere Informationen</string>
 
@@ -54,6 +54,12 @@
     <string name="prevention">Vorsorge</string>
     <string name="loadFromPhone">Gallerie</string>
     <string name="newPhoto">Neue Aufnahme</string>
+    <string name="error">Da ist wohl ein Fehler aufgetreten, versuche es bitte noch einmal.</string>
+    <string name="diagnosis">Diagnose</string>
+    <string name="lookInto">Fragwürdig</string>
+    <string name="begnin">Gutartig</string>
+    <string name="diagnosisMalignant">Suche bitte bei nächster Gelgenheit einen Hautarzt auf und zeige ihm diese Hautläsion. Es besteht die Möglichkeit, dass diese Läsion bösartig ist.</string>
+    <string name="diagnosisBegnin">Diese Läsion ist gutartig. Keine Maßnahmen sind nötig. Behalte deine Muttermale aber weiterhin im Blick</string>
 
 
 </resources>

@@ -1,20 +1,26 @@
 package com.master.molemate.DiagnosisTool;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.ChooseActionScreen;
@@ -65,6 +71,14 @@ public class Diagnosis_Tool extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        int permissionCheckStorage = ContextCompat.checkSelfPermission(Diagnosis_Tool.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheckCamera = ContextCompat.checkSelfPermission(Diagnosis_Tool.this, Manifest.permission.CAMERA);
+        if(permissionCheckCamera == PackageManager.PERMISSION_DENIED || permissionCheckStorage == PackageManager.PERMISSION_DENIED){
+            requestRuntimePermission();
+        }
+
+
+
         //Creating FragmentAdapter - Handler for Fragments + Creating ViewPager
         fragmentContainer = findViewById(R.id.container_cancer_free);
 
@@ -79,8 +93,35 @@ public class Diagnosis_Tool extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void requestRuntimePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            Toast.makeText(this, "Die Nutzung der Kamera wird benötigt," +
+                    " um Aufnahmen der Muttermale zu tätigen!", Toast.LENGTH_LONG).show();
+        } else{
+            ActivityCompat.requestPermissions(Diagnosis_Tool.this, new String[]{Manifest.permission.CAMERA}, REQUESTPERMISSIONCODE);
+        }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode){
+
+            case REQUESTPERMISSIONCODE:{
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "Du kannst nun die Kamera nutzen", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Keine Nutzung der Kamera möglich!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            break;
+
+        }
+    }
+
 
     public void selectFragmentToShow(int fragmentID) {
         fragmentContainer.setCurrentItem(fragmentID);

@@ -5,6 +5,8 @@
     <color name="colorPrimaryLight">#365BB7</color>
     <color name="colorPrimaryComplementary">#365BB7</color>
     <color name="colorAccent">#192951</color>
+    <color name="colorPositiv">#7CB342</color>
+    <color name="colorNegativ">#E53935</color>
     <color name="buttonColor">#192951</color>
     <color name="btnTextColor">#FFFFFF</color>
     <color name="blackText">#000000</color>

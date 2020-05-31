@@ -1,12 +1,17 @@
 package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,11 +23,17 @@ import com.master.molemate.DiagnosisTool.Diagnosis_SharedViewModel;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.R;
 
+import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
+
 public class Fragment_Check_Image extends Fragment {
 
-    ImageView takenImage;
-    Button back;
-    Button continueWithDiagnose;
+    private static final int CROP_IMAGE_REQ = 1;
+    private static final String TAG = "Fragment_Check_Image";
+    private ImageView takenImage;
+    private Button back;
+    private Button continueWithDiagnose;
     private Diagnosis_SharedViewModel dataContainer;
 
 
@@ -56,12 +67,25 @@ public class Fragment_Check_Image extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        dataContainer = new ViewModelProvider(getActivity()).get(Diagnosis_SharedViewModel.class);
+        dataContainer = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(Diagnosis_SharedViewModel.class);
         dataContainer.getMoleImage().observe(getViewLifecycleOwner(), new Observer<Uri>() {
             @Override
             public void onChanged(@Nullable Uri moleImageUri) {
                 takenImage.setImageURI(moleImageUri);
+                takenImage.setRotation(90f);
+
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == CROP_IMAGE_REQ && resultCode == RESULT_OK){
+            if(data != null) {
+                Bundle bundel = data.getExtras();
+                Bitmap bitmap = bundel.getParcelable("data");
+                takenImage.setImageBitmap(bitmap);
+            }
+        }
     }
 }

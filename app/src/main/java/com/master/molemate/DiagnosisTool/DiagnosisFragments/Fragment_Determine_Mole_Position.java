@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 public class Fragment_Determine_Mole_Position extends Fragment {
 
@@ -86,7 +87,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
 
         rectangle = ResourcesCompat.getDrawable(res, R.drawable.box_borders, null);
         btnText = ResourcesCompat.getColor(res, R.color.btnTextColor, null);
-        colorPrimary = ResourcesCompat.getColor(res, R.color.colorPrimary, null);
+        colorPrimary = ResourcesCompat.getColor(res, R.color.colorPrimaryDark, null);
 
         setUpSaveButton();
         setUpFrontToBackTextViewsOnClick();
@@ -100,7 +101,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // TODO: getActivity can be null, need a try catch or something similar
-        dataContainer = new ViewModelProvider(getActivity()).get(Diagnosis_SharedViewModel.class);
+        dataContainer = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(Diagnosis_SharedViewModel.class);
 
         dataContainer.getMoleImageCreationDate().observe(getViewLifecycleOwner(), new Observer<Date>() {
             @Override
@@ -191,7 +192,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
         try {
             if (molePosBitmap != null) {
 
-                File storageMoleDir = ((Diagnosis_Tool)getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File storageMoleDir = ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 String moleImageFileName;
 
                 if(dateOfCreation == null){
@@ -262,7 +263,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
             @Override
             public void onClick(View view) {
                 front.setTextColor(btnText);
-                front.setBackgroundResource(R.color.colorPrimary);
+                front.setBackgroundResource(R.color.colorPrimaryDark);
                 spine.setTextColor(colorPrimary);
                 spine.setBackgroundResource(R.color.btnTextColor);
 
@@ -279,7 +280,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
             @Override
             public void onClick(View view) {
                 spine.setTextColor(btnText);
-                spine.setBackgroundResource(R.color.colorPrimary);
+                spine.setBackgroundResource(R.color.colorPrimaryDark);
                 front.setTextColor(colorPrimary);
                 front.setBackgroundResource(R.color.btnTextColor);
 

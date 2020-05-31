@@ -1,6 +1,7 @@
 package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,7 @@ public class Fragment_Take_Picture extends Fragment {
     private static final String TAG = "Fragment_Take_Picture";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int RESULT_LOAD_IMG = 2;
+    private static final int CROP_IMAGE_REQ = 3;
 
     private Date dateOfCreation = new Date();
     private String timeStamp;
@@ -80,7 +82,7 @@ public class Fragment_Take_Picture extends Fragment {
             public void onChanged(@Nullable Uri uriMoleImage) {
 
                 if(uriMoleImage != null) {
-                    Toast.makeText(getActivity(), "Es ist bereits ein Bild aufgenommen worden.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Ein Bild wurde aufgenommen.", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(), "Es konnte kein Bild gefunden werden.", Toast.LENGTH_SHORT).show();
                 }
@@ -107,22 +109,49 @@ public class Fragment_Take_Picture extends Fragment {
                 final Uri imageUri = data.getData();
 
                 if(imageUri != null){
+
+                   //cropImg(imageUri);
+
                     Log.d(TAG, "onActivityResult: moleImageUri" + imageUri);
                     viewModel.setMoleImage(imageUri);
                     Log.d(TAG, "onActivityResult: dateOfCreation" + dateOfCreation.toString());
                     viewModel.setMoleImageCreationDate(dateOfCreation);
                     viewModel.setMoleUserViewModel(moleDBHandler);
                     ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.CHECK_IMAGE);
+
                 } else {
                     Toast.makeText(getActivity(), "Du hast wohl kein Bild ausgewählt",Toast.LENGTH_LONG).show();
                 }
 
-            }else {
+            }else if (requestCode == CROP_IMAGE_REQ) {
+                ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.CHECK_IMAGE);
+            }
+            else {
                 Toast.makeText(getActivity(), "Da ist ein Fehler aufgetreten, versuche es bitte nochmal",Toast.LENGTH_LONG).show();
             }
 
         }
         //image.setImageURI(moleImageUri);
+    }
+
+    private void cropImg(Uri imageUri) {
+        try {
+            Intent cropIntent  = new Intent("com.android.camera.action.CROP");
+            cropIntent.setData(imageUri);
+            cropIntent.putExtra("crop", "true");
+            cropIntent.putExtra("outputX", 180);
+            cropIntent.putExtra("outputY", 180);
+            cropIntent.putExtra("aspectX",3);
+            cropIntent.putExtra("aspectY",3);
+            cropIntent.putExtra("scaleUpIfNeeded",true);
+            cropIntent.putExtra("return-data",true);
+            startActivityForResult(cropIntent, CROP_IMAGE_REQ);
+
+        }catch (ActivityNotFoundException ex){
+            Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+
+            Log.e(TAG, "onChanged: " + ex);
+        }
     }
 
 
@@ -182,7 +211,6 @@ public class Fragment_Take_Picture extends Fragment {
                                 Log.i("ExternalStorage", "-> uri=" + uri);
                             }
                         });
-                //((TakeMolePicAssistent) getActivity()).selectFragmentToShow(0);
             }
         }
 
