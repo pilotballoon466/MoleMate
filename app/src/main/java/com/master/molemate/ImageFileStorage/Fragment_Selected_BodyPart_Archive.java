@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
 import com.master.molemate.ImageFileStorage.SupporterClasses.ViewModel_ImageArchive_Communication;
@@ -27,6 +28,7 @@ import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Fragment_Selected_BodyPart_Archive extends Fragment {
 
@@ -34,7 +36,7 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
 
     private Toolbar toolbar;
     private RecyclerView moleRecyclerView;
-    private RecyclerView.Adapter moleRecyclerViewAdapter;
+    private MoleMateRecyclerViewAdpter moleRecyclerViewAdapter;
     private RecyclerView.LayoutManager moleRecyclerViewLayoutManager;
     private ArrayList<RecyclerViewMoleImageItem> moleItemList;
     private ViewModel_ImageArchive_Communication fragmentCom;
@@ -54,13 +56,9 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
         //moleItemList.add(new RecyclerViewMoleImageItem(R.drawable.female_upper_body_svg, "12.1.19 Oberkörper", "Diagnose war ok"));
 
         moleRecyclerView = layout.findViewById(R.id.recyclerViewMoleImages);
-        moleRecyclerViewAdapter = new MoleMateRecyclerViewAdpter(moleItemList);
-        moleRecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
 
-        moleRecyclerView.setLayoutManager(moleRecyclerViewLayoutManager);
-        moleRecyclerView.setAdapter(moleRecyclerViewAdapter);
 
-        int currentUser = ((ImageFileArchive)getActivity()).currentUser;
+        int currentUser = ((ImageFileArchive) Objects.requireNonNull(getActivity())).currentUser;
 
 
         fragmentCom =
@@ -78,7 +76,7 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((ImageFileArchive)getActivity()).showBackButton(true);
+        //((ImageFileArchive) Objects.requireNonNull(getActivity())).showBackButton(true);
     }
 
     @Override
@@ -108,7 +106,6 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
 
         }else{
             Toast.makeText(getActivity(), "Für die " + selectedBodyPart +" hast du noch keine Aufnahmen!", Toast.LENGTH_LONG).show();
-            ((ImageFileArchive)getActivity()).selectFragmentToShowWithTitle(ImageFileArchive.SELECT_A_BODYPART);
         }
 
     }

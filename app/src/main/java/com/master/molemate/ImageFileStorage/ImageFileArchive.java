@@ -3,12 +3,15 @@ package com.master.molemate.ImageFileStorage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -18,17 +21,22 @@ import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
+import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
 import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.HomeScreen.HomeScreen;
+import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
 import com.master.molemate.ImageFileStorage.SupporterClasses.ViewModel_ImageArchive_Communication;
 import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class ImageFileArchive extends AppCompatActivity {
+public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyclerViewAdpter.OnMoleListener {
 
     private static final String TAG = "ImageFileArchive";
 
@@ -43,12 +51,23 @@ public class ImageFileArchive extends AppCompatActivity {
     ViewPager fragmentContainerArchive;
     DrawerLayout drawer;
 
+    //Variables for RecyclerView
+    private MoleMateRecyclerViewAdpter moleRecyclerViewAdapter;
+
+
     public int currentUser;
 
     private ViewModel_ImageArchive_Communication fragmentViewModelCom;
     private MoleMateDB_ViewModel dbCom;
     private List<EntityMix_User_MoleLib> moleLibCurrentUser;
     private boolean mToolBarNavigationListenerIsRegistered = false;
+    private ArrayList<RecyclerViewMoleImageItem> moleItemList;
+    private RecyclerView moleRecyclerView;
+    private RecyclerView.LayoutManager moleRecyclerViewLayoutManager;
+    private List<EntityMix_User_MoleLib> moleLib;
+
+    private File dir;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,45 +99,91 @@ public class ImageFileArchive extends AppCompatActivity {
         toggle.syncState();
 
         //Creating FragmentAdapter - Handler for Fragments + Creating ViewPager
-        fragmentContainerArchive = findViewById(R.id.fragment_container_image_archive);
+        //fragmentContainerArchive = findViewById(R.id.fragment_container_image_archive);
 
         //Create Com Tool for ArchiveFragments
         fragmentViewModelCom = new ViewModelProvider(this).get(ViewModel_ImageArchive_Communication.class);
 
-        currentUser = getIntent().getIntExtra("currentUser", 0);
+        //Create Handler for Saved images
+        moleItemList = new ArrayList<>();
+        moleRecyclerView = findViewById(R.id.recyclerViewMoleImages);
+        moleRecyclerViewAdapter = new MoleMateRecyclerViewAdpter(moleItemList, this);
+        moleRecyclerViewLayoutManager = new LinearLayoutManager(this);
 
-        addFragmentsToViewPager();
+        moleRecyclerView.setLayoutManager(moleRecyclerViewLayoutManager);
+        moleRecyclerView.setAdapter(moleRecyclerViewAdapter);
 
-        selectFragmentToShow(0);
+
+        currentUser = getIntent().getIntExtra("currentUser", 1);
+
+
+        //addFragmentsToViewPager();
+
+        //selectFragmentToShow(0);
+
+        Log.e(TAG, "onCreate: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"");
+
 
         dbCom = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
         dbCom.getAllMolesFromUser(currentUser).observe(this, new Observer<List<EntityMix_User_MoleLib>>() {
             @Override
             public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
                 fragmentViewModelCom.setUserMoleLib(entityMix_user_moleLibs);
+                moleLib = entityMix_user_moleLibs;
+
+                for(EntityMix_User_MoleLib moleEntry : moleLib){
+
+                    Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
+
+
+                    moleItemList.add(new RecyclerViewMoleImageItem(
+                            Uri.parse(moleEntry.mole_library.getMoleImageUri()),
+                            moleEntry.mole_library.getDateMoleImageCreation(),
+                            moleEntry.mole_library.getDiagnosis()));
+                }
+                moleRecyclerViewAdapter.notifyDataSetChanged();
+
+
+                Log.d(TAG, "onChanged: moleLib " + moleLib.size());
             }
         });
 
+        moleRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Log.e(TAG, "onClick: View ID " + view.getId());
+                Log.e(TAG, "onClick: View insights " + view.toString() );
+            }
+        });
     }
 
-    public void selectFragmentToShow(int fragmentID) {
-        fragmentContainerArchive.setCurrentItem(fragmentID);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.searchMenu);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                moleRecyclerViewAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
     }
 
-    public void selectFragmentToShowWithTitle(String title){
-        fragmentContainerArchive.setCurrentItem(adapter.getItemWithTitle(title));
-    }
 
-
-    private void addFragmentsToViewPager() {
-        adapter = new MoleMateFragmentStatePagerAdapter(getSupportFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(new Fragment_SelectBodyPart(), SELECT_A_BODYPART);
-        adapter.addFragment(new Fragment_Selected_BodyPart_Archive(), SELECTED_BODYPART);
-
-        fragmentContainerArchive.setAdapter(adapter);
-    }
 
     private void onItemSelected(MenuItem menuItem) {
         Intent intent;
@@ -150,50 +215,14 @@ public class ImageFileArchive extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        int currentFragmentID = fragmentContainerArchive.getCurrentItem();
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
-        else if (currentFragmentID >0) {
-            selectFragmentToShow(0);
-        }else
-            super.onBackPressed();
+        super.onBackPressed();
     }
 
 
-    protected void showBackButton(boolean show) {
+    @Override
+    public void onMoleClick(int position) {
+        RecyclerViewMoleImageItem moleEntry = moleItemList.get(position);
 
-        if (show) {
-            // Remove hamburger
-            toggle.setDrawerIndicatorEnabled(false);
-            // Show back button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            // when DrawerToggle is disabled i.e. setDrawerIndicatorEnabled(false), navigation icon
-            // clicks are disabled i.e. the UP button will not work.
-            // We need to add a listener, as in below, so DrawerToggle will forward
-            // click events to this listener.
-            if (!mToolBarNavigationListenerIsRegistered) {
-                toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onBackPressed();
-                    }
-                });
-                mToolBarNavigationListenerIsRegistered = true;
-            }
-
-        } else {
-            // Remove back button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            // Show hamburger
-            toggle.setDrawerIndicatorEnabled(true);
-            // Remove the/any drawer toggle listener
-            toggle.setToolbarNavigationClickListener(null);
-            mToolBarNavigationListenerIsRegistered = false;
-        }
+        Log.d(TAG, "onMoleClick: moleEntry: " + moleEntry.getCardViewTitle());
     }
-
-    public void setDrawerIndicatorEnable(boolean b) {
-        toggle.setDrawerIndicatorEnabled(b);
-    }
-
 }

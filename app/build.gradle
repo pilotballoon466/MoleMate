@@ -60,4 +60,7 @@ dependencies {
 
     //Cropping Images
     implementation 'com.github.yalantis:ucrop:2.2.2'
+
+    //Ask for Permission
+    implementation 'pub.devrel:easypermissions:3.0.0'
 }

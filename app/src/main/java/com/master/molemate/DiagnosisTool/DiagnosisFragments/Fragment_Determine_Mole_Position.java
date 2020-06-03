@@ -169,6 +169,8 @@ public class Fragment_Determine_Mole_Position extends Fragment {
                     dataContainer.setIsFront(isFront);
                     if(molePosImageUri != null) {
                         dataContainer.setMolePosImage(molePosImageUri);
+                        ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.DIAGNOSIS);
+
                     }else{
                         Toast.makeText(
                                 getActivity(),

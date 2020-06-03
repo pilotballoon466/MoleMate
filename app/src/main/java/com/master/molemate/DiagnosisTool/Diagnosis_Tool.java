@@ -15,6 +15,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +28,6 @@ import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Check_Image;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Determine_Mole_Position;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Diagnosis;
-import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Save_Mole_Diagnosis;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Take_Picture;
 import com.master.molemate.ImageFileStorage.Fragment_Selected_BodyPart_Archive;
 import com.master.molemate.R;
@@ -71,10 +71,12 @@ public class Diagnosis_Tool extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        int permissionCheckStorage = ContextCompat.checkSelfPermission(Diagnosis_Tool.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int permissionCheckCamera = ContextCompat.checkSelfPermission(Diagnosis_Tool.this, Manifest.permission.CAMERA);
-        if(permissionCheckCamera == PackageManager.PERMISSION_DENIED || permissionCheckStorage == PackageManager.PERMISSION_DENIED){
-            requestRuntimePermission();
+        String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if (EasyPermissions.hasPermissions(this, galleryPermissions)) {
+            Log.d(TAG, "onCreate: Permission granted");
+        } else {
+            EasyPermissions.requestPermissions(this, "Access for storage",
+                    101, galleryPermissions);
         }
 
 
@@ -95,15 +97,7 @@ public class Diagnosis_Tool extends AppCompatActivity {
         });
     }
 
-    private void requestRuntimePermission() {
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
-            Toast.makeText(this, "Die Nutzung der Kamera wird benötigt," +
-                    " um Aufnahmen der Muttermale zu tätigen!", Toast.LENGTH_LONG).show();
-        } else{
-            ActivityCompat.requestPermissions(Diagnosis_Tool.this, new String[]{Manifest.permission.CAMERA}, REQUESTPERMISSIONCODE);
-        }
 
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

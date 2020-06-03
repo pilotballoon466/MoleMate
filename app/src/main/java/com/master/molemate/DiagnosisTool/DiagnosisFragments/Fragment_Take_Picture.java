@@ -3,6 +3,7 @@ package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.icu.text.SimpleDateFormat;
@@ -34,8 +35,10 @@ import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
 
@@ -97,7 +100,7 @@ public class Fragment_Take_Picture extends Fragment {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 //image.setImageURI(moleImageUri);
                 Log.d(TAG, "onActivityResult: moleImageUri" + moleImageUri);
-                viewModel.setMoleImage(moleImageUri);
+                viewModel.setMoleImage(Uri.parse(currentPhotoPath));
                 Log.d(TAG, "onActivityResult: dateOfCreation" + dateOfCreation.toString());
                 viewModel.setMoleImageCreationDate(dateOfCreation);
                 viewModel.setMoleUserViewModel(moleDBHandler);
@@ -111,9 +114,19 @@ public class Fragment_Take_Picture extends Fragment {
                 if(imageUri != null){
 
                    //cropImg(imageUri);
+                    String res = null;
+                    String[] proj = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = Objects.requireNonNull(getActivity()).getContentResolver()
+                            .query(imageUri, proj, null, null, null);
 
-                    Log.d(TAG, "onActivityResult: moleImageUri" + imageUri);
-                    viewModel.setMoleImage(imageUri);
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+
+                        res = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                        cursor.close();
+                    }
+
+                    viewModel.setMoleImage(Uri.parse(res));
                     Log.d(TAG, "onActivityResult: dateOfCreation" + dateOfCreation.toString());
                     viewModel.setMoleImageCreationDate(dateOfCreation);
                     viewModel.setMoleUserViewModel(moleDBHandler);
