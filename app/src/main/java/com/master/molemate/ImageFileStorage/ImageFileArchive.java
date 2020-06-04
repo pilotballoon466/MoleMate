@@ -135,7 +135,6 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
                     Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
 
-
                     moleItemList.add(new RecyclerViewMoleImageItem(
                             Uri.parse(moleEntry.mole_library.getMoleImageUri()),
                             moleEntry.mole_library.getDateMoleImageCreation(),
@@ -145,6 +144,8 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
                             moleEntry.mole_library.getDiagnosedPropability()
                     ));
                 }
+
+                moleRecyclerViewAdapter.setFullList();
                 moleRecyclerViewAdapter.notifyDataSetChanged();
 
 
@@ -221,6 +222,11 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
         super.onBackPressed();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onMoleClick(int position) {

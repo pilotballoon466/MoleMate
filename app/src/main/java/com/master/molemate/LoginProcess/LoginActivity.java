@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         registrationButton = findViewById(R.id.registrationButton);
 
         mailView.setText("default@default.com");
-        passwordView.setText("default");
+        passwordView.setText("Passwort1234");
 
         auth = FirebaseAuth.getInstance();
 

@@ -1,10 +1,13 @@
 package com.master.molemate.Adapter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
@@ -28,6 +32,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRecyclerViewAdpter.MoleMateRecyclerViewViewHolder> implements Filterable {
 
+    private static final String TAG = "MoleMateRecyclerViewAdp";
+    
     private ArrayList<RecyclerViewMoleImageItem> moleItemsList;
     private ArrayList<RecyclerViewMoleImageItem> fullItemList;
     private OnMoleListener onMoleListener;
@@ -35,17 +41,19 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
 
     static class MoleMateRecyclerViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-         ImageView cardViewMoleThumbnailImage;
+         ImageView cardviewMoleThumbnailImage;
          TextView cardviewMoleTitle;
          TextView cardviewMoleText;
+         CardView cardviewView;
          OnMoleListener onMoleListener;
 
          MoleMateRecyclerViewViewHolder(@NonNull View itemView, OnMoleListener onMoleListener) {
             super(itemView);
 
-            cardViewMoleThumbnailImage = itemView.findViewById(R.id.cardviewMoleThumbnailImage);
+            cardviewMoleThumbnailImage = itemView.findViewById(R.id.cardviewMoleThumbnailImage);
             cardviewMoleTitle = itemView.findViewById(R.id.cardviewMoleTitle);
             cardviewMoleText = itemView.findViewById(R.id.cardviewMoleText);
+            cardviewView = itemView.findViewById(R.id.recyclerViewMoleItem);
 
             this.onMoleListener = onMoleListener;
 
@@ -63,6 +71,8 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
     public MoleMateRecyclerViewAdpter(ArrayList<RecyclerViewMoleImageItem> moleItemsList, OnMoleListener onMoleListener) {
         this.moleItemsList = moleItemsList;
         fullItemList = new ArrayList<>(moleItemsList);
+
+        Log.d(TAG, "MoleMateRecyclerViewAdpter: moleList " + moleItemsList.toString() + " fullItem " + fullItemList.toString());
         this.onMoleListener = onMoleListener;
     }
 
@@ -79,13 +89,24 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
         RecyclerViewMoleImageItem currentItem = moleItemsList.get(position);
 
         Bitmap bitmap = BitmapFactory.decodeFile(currentItem.getMoleThumbnail().getPath());
+        double tmpPropDiagnosis = currentItem.getMoleDiagnosis();
 
+        if(tmpPropDiagnosis<25.0){
+            holder.cardviewView.setBackgroundColor(Color.GREEN);
+        } else if (tmpPropDiagnosis<75.0 && tmpPropDiagnosis > 25.0){
+            holder.cardviewView.setBackgroundColor(Color.YELLOW);
+        }else{
+            holder.cardviewView.setBackgroundColor(Color.RED);
+        }
 
-        holder.cardViewMoleThumbnailImage.setImageResource(currentItem.getMoleThumbnail());
-        holder.cardviewMoleTitle.setText(currentItem.getCardViewTitle());
-        holder.cardviewMoleText.setText(currentItem.getCardviewText());
+        holder.cardviewMoleThumbnailImage.setImageBitmap(bitmap);
+        holder.cardviewMoleThumbnailImage.setRotation(holder.cardviewMoleThumbnailImage.getRotation()*90f);
+        holder.cardviewMoleTitle.setText(currentItem.getCardviewPosText());
+        holder.cardviewMoleText.setText(currentItem.getCardViewDate());
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -104,14 +125,17 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
         protected FilterResults performFiltering(CharSequence constraint) {
             List<RecyclerViewMoleImageItem> filteredList = new ArrayList<>();
 
-            if(constraint == null || constraint.length() == 0){
+            if(constraint == null || constraint.length() == 0 || constraint.equals("")){
                 filteredList.addAll(fullItemList);
+                Log.d(TAG, "performFiltering: added fullList: " + fullItemList.toString() );
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
+                Log.d(TAG, "performFiltering: filterPattern: " + filterPattern );
 
                 for (RecyclerViewMoleImageItem item : fullItemList){
                     if(item.getCardviewText().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
+                        Log.d(TAG, "performFiltering: added search Item: " + item.getCardviewPosText());
                     }
                 }
             }
@@ -125,13 +149,17 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
             moleItemsList.clear();
-            moleItemsList.addAll((List) filterResults.values);
+            Log.d(TAG, "publishResults: values " + filterResults.values.toString());
+            moleItemsList.addAll((ArrayList<RecyclerViewMoleImageItem>) filterResults.values);
             notifyDataSetChanged();
 
         }
     };
+
+    public void setFullList() {
+        fullItemList = new ArrayList<>(moleItemsList);
+    }
 
     public interface OnMoleListener{
         void onMoleClick(int position);
