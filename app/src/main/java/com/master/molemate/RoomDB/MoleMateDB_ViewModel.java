@@ -41,6 +41,10 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
         return repository.getAllUsers();
     }
 
+    public LiveData<Entity_Users> getUserByMail(String mail){
+        return repository.getUserByMail(mail);
+    }
+
     public void insertUser(Entity_Users user_Entry){
         repository.insertUser(user_Entry);
     }

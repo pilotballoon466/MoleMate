@@ -25,6 +25,9 @@ public interface DAO_Interface_Users {
     @Query("SELECT * FROM users_table")
     LiveData<List<Entity_Users>> getAllUser();
 
+    @Query("Select * FROM users_table WHERE mail = :mail")
+    LiveData<Entity_Users> getUserByMail(String mail);
+
     @Insert
     void insert(Entity_Users user);
 

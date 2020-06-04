@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toolbar;
 
 import com.master.molemate.HomeScreen.HomeScreen;
+import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.RoomDB.DAO_Interfaces.DAO_Interface_Mole_Library;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
@@ -28,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private MoleMateDB moleMateDB;
     private MoleMateDB_Repository moleMateDBRepository;
     private MoleMateDB_ViewModel moleMateDBViewModel;
-    private List<Entity_Users>users;
+    private Entity_Users user;
     private List<EntityMix_User_MoleLib> moleUserMix;
+    private String userMail;
+    private static int uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +43,35 @@ public class MainActivity extends AppCompatActivity {
         //Erstelle statische Klasse für die unteren drei Aufrufe
         //dbFactory in der Art, die die Instance immer wieder anfragt
 
+        Intent tmpIntent = getIntent();
+
+        userMail = tmpIntent.getStringExtra("mail");
+
         moleMateDBViewModel = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
 
-        moleMateDBViewModel.getAllUsers().observe(this, new Observer<List<Entity_Users>>() {
+        moleMateDBViewModel.getUserByMail(userMail).observe(this, new Observer<Entity_Users>() {
             @Override
-            public void onChanged(List<Entity_Users> entity_users) {
-                users = entity_users;
-                if(users.size() != 0) {
-                    Log.d(TAG, "collectedAllUsers() size: " + users.size() + " with id " + users.get(0).getUid());
+            public void onChanged(Entity_Users entity_users) {
+                user = entity_users;
+                if(user != null) {
 
-                    getMolesForUser(users.get(0).getUid());
+                    uid = user.getUid();
+
+                    Log.d(TAG, "collectedAllUsers() size: " + user.getUserName() + " with id " + uid);
+
+                    getMolesForUser(uid);
 
                 }else{
                     Log.d(TAG, "No User!");
-                }
 
+                    new PopulatDefaultUserToDBAsyncTask(moleMateDBViewModel).execute();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+        Log.d(TAG, "onCreate: This should be the User! " + uid);
+
     }
 
     private void getMolesForUser(int uid) {
@@ -66,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
                 moleUserMix = entityMix_user_moleLibs;
                 if(moleUserMix.size() == 0){
-                    new PopulateMoleDBAsyncTask(moleMateDBViewModel, tmpUid).execute();
+                    //new PopulateMoleDBAsyncTask(moleMateDBViewModel, tmpUid).execute();
 
                 }
 
                 Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
-                intent.putExtra("currentUser", users.get(0).getUid());
+                intent.putExtra("currentUser", tmpUid);
                 startActivity(intent);
 
 
@@ -97,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165277",
                     "2131165277",
                     -10000,
+                    "Bein",
                     true,
                     "Es scheint alles OK zu sein",
                     99.9
@@ -107,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165317",
                     "2131165317",
                     -20000,
+                    "Hand",
                     true,
                     "Es scheint alles OK zu sein",
                     90.9
@@ -117,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165295",
                     "2131165295",
                     -30000,
+                    "Bauch",
                     true,
                     "Es scheint alles OK zu sein",
                     87.9
@@ -127,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165318",
                     "2131165318",
                     -40000,
+                    "Kopf",
                     true,
                     "Es scheint nicht alles OK zu sein",
                     22.9
@@ -138,6 +157,32 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d(TAG, "onPostExecute: inserted example Mole Entries");
+        }
+    }
+
+    private static class PopulatDefaultUserToDBAsyncTask extends AsyncTask<Void, Void, Void> {
+        private MoleMateDB_ViewModel moleLibDao;
+
+        private PopulatDefaultUserToDBAsyncTask(MoleMateDB_ViewModel moleUserDB){
+            this.moleLibDao = moleUserDB;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            moleLibDao.insertUser(new Entity_Users(
+                    "default",
+                    "default",
+                    "default",
+                    "default@default.com"
+            ));
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d(TAG, "onPostExecute: inserted default User");
         }
     }
 

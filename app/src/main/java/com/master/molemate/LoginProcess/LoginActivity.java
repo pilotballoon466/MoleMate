@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG, "signIn:" + mail);
 
-
+        final String tmpMail = mail;
 
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(mail, password)
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            successfulLogin(auth.getCurrentUser().getUid());
+                            successfulLogin(tmpMail);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -110,12 +110,12 @@ public class LoginActivity extends AppCompatActivity {
         // [END sign_in_with_email]
     }
 
-    private void successfulLogin(String uid) {
+    private void successfulLogin(String mail) {
 
         Log.d(TAG, "signInWithEmail:success");
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("uid", uid);
+        intent.putExtra("mail", mail);
         startActivity(intent);
     }
 }

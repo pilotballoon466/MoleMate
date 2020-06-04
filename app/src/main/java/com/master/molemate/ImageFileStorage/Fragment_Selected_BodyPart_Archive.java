@@ -96,10 +96,8 @@ public class Fragment_Selected_BodyPart_Archive extends Fragment {
             for(EntityMix_User_MoleLib moleEntry : moleLibCurrentUser){
                 if(moleEntry.mole_library.getMolePosColorCode() == colorCode){
 
-                    moleItemList.add(new RecyclerViewMoleImageItem(
-                            Integer.parseInt(moleEntry.mole_library.getMoleImageUri()),
-                            moleEntry.mole_library.getDateMoleImageCreation(),
-                            moleEntry.mole_library.getDiagnosis()));
+                    Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
+
                 }
             }
             moleRecyclerViewAdapter.notifyDataSetChanged();

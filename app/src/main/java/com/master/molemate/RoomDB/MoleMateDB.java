@@ -16,7 +16,7 @@ import com.master.molemate.RoomDB.DAO_Interfaces.DAO_Interface_Users;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.Entities.Entity_Users;
 
-@Database(entities = {Entity_Mole_Library.class, Entity_Users.class}, version = 1)
+@Database(entities = {Entity_Mole_Library.class, Entity_Users.class}, version = 2)
 public abstract class MoleMateDB extends RoomDatabase {
 
     private static final String TAG = "MoleUserDB";
@@ -33,11 +33,14 @@ public abstract class MoleMateDB extends RoomDatabase {
         if(mInstance == null){
             mInstance = Room.databaseBuilder(context.getApplicationContext(),
                     MoleMateDB.class,
-                    "HealthMateDB")
+                    "MoleMateDB")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
         }
+
+        Log.d(TAG, "getInstance: populated DB instance");
+        
         return mInstance;
     }
 
@@ -62,7 +65,7 @@ public abstract class MoleMateDB extends RoomDatabase {
                     "default",
                     "default",
                     "default",
-                    "default"));
+                    "default@default.com"));
             return null;
         }
 

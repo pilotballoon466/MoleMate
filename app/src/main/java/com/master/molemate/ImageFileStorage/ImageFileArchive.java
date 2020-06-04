@@ -139,7 +139,11 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
                     moleItemList.add(new RecyclerViewMoleImageItem(
                             Uri.parse(moleEntry.mole_library.getMoleImageUri()),
                             moleEntry.mole_library.getDateMoleImageCreation(),
-                            moleEntry.mole_library.getDiagnosis()));
+                            moleEntry.mole_library.getDiagnosis(),
+                            moleEntry.mole_library.getMolePosText(),
+                            moleEntry.mole_library.getMoleID(),
+                            moleEntry.mole_library.getDiagnosedPropability()
+                    ));
                 }
                 moleRecyclerViewAdapter.notifyDataSetChanged();
 
@@ -184,7 +188,6 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
     }
 
 
-
     private void onItemSelected(MenuItem menuItem) {
         Intent intent;
         switch (menuItem.getItemId()){
@@ -223,6 +226,6 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
     public void onMoleClick(int position) {
         RecyclerViewMoleImageItem moleEntry = moleItemList.get(position);
 
-        Log.d(TAG, "onMoleClick: moleEntry: " + moleEntry.getCardViewTitle());
+        Log.d(TAG, "onMoleClick: moleEntry: " + moleEntry.getCardViewDate());
     }
 }

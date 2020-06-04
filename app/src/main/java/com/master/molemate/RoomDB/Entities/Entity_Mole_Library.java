@@ -32,6 +32,9 @@ public class Entity_Mole_Library {
     @ColumnInfo(name = "mole_pos_color_code")
     private int molePosColorCode;
 
+    @ColumnInfo(name = "mole_pos_text")
+    private String molePosText;
+
     @ColumnInfo(name = "body_frontside")
     private boolean isBodyFrontside;
 
@@ -44,6 +47,7 @@ public class Entity_Mole_Library {
                                int userToMole, String moleImageUri,
                                String molePosBitmapUri,
                                int molePosColorCode,
+                               String molePosText,
                                boolean isBodyFrontside,
                                String diagnosis,
                                double diagnosedPropability)
@@ -53,6 +57,7 @@ public class Entity_Mole_Library {
         this.moleImageUri = moleImageUri;
         this.molePosBitmapUri = molePosBitmapUri;
         this.molePosColorCode = molePosColorCode;
+        this.molePosText = molePosText;
         this.isBodyFrontside = isBodyFrontside;
         this.diagnosis = diagnosis;
         this.diagnosedPropability = diagnosedPropability;
@@ -128,5 +133,13 @@ public class Entity_Mole_Library {
 
     public void setDiagnosedPropability(double diagnosedPropability) {
         this.diagnosedPropability = diagnosedPropability;
+    }
+
+    public String getMolePosText() {
+        return molePosText;
+    }
+
+    public void setMolePosText(String molePosText) {
+        this.molePosText = molePosText;
     }
 }

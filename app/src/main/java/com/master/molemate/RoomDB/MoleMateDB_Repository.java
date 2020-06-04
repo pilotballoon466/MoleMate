@@ -37,6 +37,7 @@ public class MoleMateDB_Repository {
     private static Entity_Users currentUser;
     private LiveData<List<Entity_Users>> users;
     private LiveData<List<EntityMix_User_MoleLib>> moleLibFromUser;
+    private LiveData<Entity_Users> activeUser;
     private static int uid;
 
     public MoleMateDB_Repository(Application application) {
@@ -47,30 +48,43 @@ public class MoleMateDB_Repository {
         users = userDao.getAllUser();
     }
 
-    public void insertUser(Entity_Users userEntry){
+    void insertUser(Entity_Users userEntry){
         new InsertUserAsyncTask(userDao).execute(userEntry);
     }
 
-    public void deleteUser(Entity_Users user){
+    LiveData<Entity_Users> getUserByMail(String mail){
+        if(uid == 0) {
+            activeUser = userDao.getUserByMail(mail);
+            if(activeUser.getValue() != null) {
+                uid = activeUser.getValue().getUid();
+                Log.d(TAG, "getUserByMail: uid " + uid);
+            }
+        }
+        return activeUser;
+
+    }
+
+    void deleteUser(Entity_Users user){
         new DeleteUserAsyncTask(userDao).execute(user);
     }
 
-    public LiveData<List<Entity_Users>> getAllUsers(){
+
+    LiveData<List<Entity_Users>> getAllUsers(){
         if(users == null){
             users = userDao.getAllUser();
         }
         return users;
     }
 
-    public void insertMole(Entity_Mole_Library moleLib_entry) {
+    void insertMole(Entity_Mole_Library moleLib_entry) {
         new InsertMoleAsyncTask(moleLibDao).execute(moleLib_entry);
     }
 
-    public void deleteMole(Entity_Mole_Library moleLib_entry){
+    void deleteMole(Entity_Mole_Library moleLib_entry){
         new DeleteMoleAsyncTask(moleLibDao).execute(moleLib_entry);
     }
 
-    public LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
+    LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
         //TODO: sollte nur einmal zugewiesen werden!
         moleLibFromUser = moleLibDao.getAllMolesFromUser(uid);
         return moleLibFromUser;

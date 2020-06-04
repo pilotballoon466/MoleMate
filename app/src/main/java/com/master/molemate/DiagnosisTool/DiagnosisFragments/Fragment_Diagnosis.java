@@ -44,6 +44,7 @@ public class Fragment_Diagnosis extends Fragment {
     private float tmpDiagnosisProb;
     private Uri tmpUriMolePosBitmap;
     private String tmpDateOfCreation;
+    private String tmpMolePosText;
     private int tmpUserOfMole;
     private boolean tmpIsFrontside;
     private Entity_Mole_Library moleEntry;
@@ -78,7 +79,7 @@ public class Fragment_Diagnosis extends Fragment {
 
     private boolean checkData() {
         if(dbHandler == null){
-
+            return false;
         }else if(tmpUriMoleImage == null){
             return false;
 
@@ -100,11 +101,12 @@ public class Fragment_Diagnosis extends Fragment {
         }else if(tmpDiagnosisProb == 0.0){
             return false;
 
-        }else {
+        }else if(tmpMolePosText.equals("")){
+            return false;
+
+        } else {
             return true;
         }
-
-        return true;
     }
 
     private void crawlingMoleData() {
@@ -172,8 +174,17 @@ public class Fragment_Diagnosis extends Fragment {
                 }
             });
 
+            dataContainer.getMolePosInWords().observe(getViewLifecycleOwner(), new Observer<String>() {
 
-
+                @Override
+                public void onChanged(String molePosText) {
+                    if(molePosText != null) {
+                        tmpMolePosText = molePosText;
+                        Log.d(TAG, "onChanged: date: " + molePosText);
+                    }
+                    Log.d(TAG, "onChanged: date: " + molePosText);
+                }
+            });
 
         }
     }
