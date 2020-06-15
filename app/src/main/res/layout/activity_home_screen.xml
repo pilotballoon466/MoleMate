@@ -159,12 +159,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/mole_mate_logo"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            android:text="@string/diagnosis"
-                            android:hint="@string/diagnosis"/>
 
                     </LinearLayout>
 
@@ -188,21 +182,18 @@
                  android:onClick="goToActivity"
                  >
                  <LinearLayout
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
                      android:layout_gravity="center_horizontal|center_vertical"
                      android:layout_margin="16dp"
                      android:orientation="vertical">
                      <ImageView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
                          android:layout_gravity="center_horizontal"
-                         android:src="@drawable/ic_folder"/>
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:textAlignment="center"
-                         android:text="@string/yourArchive"/>
+                         android:src="@drawable/ic_folder"
+                         android:tint="@color/colorPrimaryDark"
+                         android:scaleType="fitXY"/>
 
                  </LinearLayout>
 
@@ -212,44 +203,7 @@
              <!-- Row 2 -->
 
                  <!-- Column 1 -->
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/cardviewTele"
-                 android:layout_height="0dp"
-                 android:layout_width="0dp"
-                 android:layout_columnWeight="1"
-                 android:layout_rowWeight="1"
-                 android:layout_marginBottom="16dp"
-                 android:layout_marginStart="16dp"
-                 android:layout_marginEnd="16dp"
-                 app:cardElevation="8dp"
-                 app:cardCornerRadius="8dp"
-                 android:clickable="true"
-                 android:focusable="true"
-                 android:onClick="goToActivity"
-                 >
-                 <LinearLayout
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center_horizontal|center_vertical"
-                     android:layout_margin="16dp"
-                     android:orientation="vertical">
-                     <ImageView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_gravity="center_horizontal"
-                         android:src="@drawable/ic_health"/>
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:textAlignment="center"
-                         android:text="@string/connectDoc"/>
 
-                 </LinearLayout>
-
-             </androidx.cardview.widget.CardView>
-
-
-             <!-- Column 2 -->
              <androidx.cardview.widget.CardView
                  android:id="@+id/cardviewPrev"
                  android:layout_height="0dp"
@@ -266,21 +220,54 @@
                  android:onClick="goToActivity"
                  >
                  <LinearLayout
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
                      android:layout_gravity="center_horizontal|center_vertical"
                      android:layout_margin="16dp"
                      android:orientation="vertical">
                      <ImageView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
                          android:layout_gravity="center_horizontal"
-                         android:src="@drawable/ic_prev"/>
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:textAlignment="center"
-                         android:text="@string/prevention"/>
+                         android:src="@drawable/ic_prev"
+                         android:tint="@color/colorPrimaryDark"
+                         android:scaleType="fitXY"
+                         />
+
+                 </LinearLayout>
+
+             </androidx.cardview.widget.CardView>
+
+
+             <!-- Column 2 -->
+             <androidx.cardview.widget.CardView
+                 android:id="@+id/cardviewImpressum"
+                 android:layout_height="0dp"
+                 android:layout_width="0dp"
+                 android:layout_columnWeight="1"
+                 android:layout_rowWeight="1"
+                 android:layout_marginBottom="16dp"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginEnd="16dp"
+                 app:cardElevation="8dp"
+                 app:cardCornerRadius="8dp"
+                 android:clickable="true"
+                 android:focusable="true"
+                 android:onClick="goToActivity"
+                 >
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_gravity="center_horizontal|center_vertical"
+                     android:layout_margin="16dp"
+                     android:orientation="vertical">
+                     <ImageView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:layout_gravity="center_horizontal"
+                         android:src="@drawable/ic_person"
+                         android:tint="@color/colorPrimaryDark"
+                         android:scaleType="fitXY"/>
 
                  </LinearLayout>
 

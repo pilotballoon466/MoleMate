@@ -12,6 +12,7 @@ import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.Entities.Entity_Users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Need a LoginScreen and a LoginProcess!
@@ -45,6 +46,10 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
         return repository.getUserByMail(mail);
     }
 
+    public LiveData<List<Entity_Mole_Library>> getAllMolesFromMoleIds(int[] moleIDs){
+        return repository.getAllMolesFromMoleIds(moleIDs);
+    }
+
     public void insertUser(Entity_Users user_Entry){
         repository.insertUser(user_Entry);
     }
@@ -53,7 +58,12 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
         repository.insertMole(moleLib_Entry);
     }
 
+    public void updateMole(Entity_Mole_Library mole_library){
+        repository.updateMole(mole_library);
+    }
+
     public LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
+        Log.d(TAG, "getAllMolesFromUser: Triggered to get Moles from " + uid);
         return repository.getAllMolesFromUser(uid);
     }
 

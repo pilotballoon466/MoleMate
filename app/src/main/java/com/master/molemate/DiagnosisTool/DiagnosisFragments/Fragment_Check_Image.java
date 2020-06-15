@@ -49,14 +49,15 @@ public class Fragment_Check_Image extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Diagnosis_Tool)getActivity()).selectFragmentToShow(0);
+                ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.TAKE_IMAGE);
             }
         });
 
         continueWithDiagnose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Diagnosis_Tool)getActivity()).selectFragmentToShow(2);
+
+                ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.MOLE_POSITION);
             }
         });
 
@@ -68,6 +69,7 @@ public class Fragment_Check_Image extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         dataContainer = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(Diagnosis_SharedViewModel.class);
+        ((Diagnosis_Tool)getActivity()).showBackButton(true);
         dataContainer.getMoleImage().observe(getViewLifecycleOwner(), new Observer<Uri>() {
             @Override
             public void onChanged(@Nullable Uri moleImageUri) {

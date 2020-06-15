@@ -6,7 +6,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" android:maxSdkVersion="18"/>
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:maxSdkVersion="18" />
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -19,12 +21,19 @@
         android:roundIcon="@mipmap/molemate_launcher_ic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeleMed.TeleMed"></activity>
+        <activity android:name=".Prevention.Prevention" />
+        <activity android:name=".Impressum.Impressum" />
         <activity android:name=".HomeScreen.HomeScreen" />
+        <activity android:name=".HomeScreen.UVIndexInfo"
+            android:parentActivityName=".HomeScreen.HomeScreen"></activity>
+
         <activity android:name=".DiagnosisTool.Diagnosis_Tool" />
         <activity
             android:name=".ImageFileStorage.ImageFileArchive"
-            android:parentActivityName=".ChooseActionScreen" />
+            android:parentActivityName=".HomeScreen.HomeScreen" />
+        <activity
+            android:name=".ImageFileStorage.ImageArchiveShowMole"
+            android:parentActivityName=".ImageFileStorage.ImageFileArchive" />
         <activity android:name=".ChooseActionScreen" />
         <activity android:name=".LoginProcess.UserRegistration" />
         <activity android:name=".LoginProcess.LoginActivity">

@@ -2,11 +2,11 @@
     <string name="app_name">MoleMate</string>
     <string name="takePic">Mache ein Foto!</string>
     <string name="toolbarTakePic">Mache ein Foto</string>
-    <string name="menuItemTakePic">CancerFree</string>
+    <string name="menuItemTakePic">Screening</string>
     <string name="nav_opening">NavigationDrawer open</string>
     <string name="nav_closing">NavigationDrawer closing</string>
     <string name="home">Home</string>
-    <string name="menuItemHealth">Gesundheitsdaten</string>
+    <string name="menuItemHealth">Dein Archiv</string>
     <string name="menuItemInformation">Zusätzliche Informationen</string>
     <string name="app_description">Diese App wurde im Rahmen der Masterarbeit von Bastian Kamp geschrieben!</string>
     <string name="toDiagnosis">Starte Diagnose</string>
@@ -22,7 +22,7 @@
     <string name="fragment_descrip_colored_body_image">Colored Body for mole position picking</string>
     <string name="yourArchive">Dein Archive</string>
     <string name="takeMolePicButtonText">Neue Aufnahme</string>
-    <string name="cancerCheckerClass">HealthMate</string>
+    <string name="cancerCheckerClass">MoleMate</string>
     <string name="upperBody">Oberkörper</string>
     <string name="head">Kopf</string>
     <string name="arms">Arme</string>
@@ -50,17 +50,41 @@
     <string name="uv_index_high_risk">Bei einem Index ab 8 sind Schutzmaßnahmen zwingend erforderlich.
         Nutze Sonnencreme mit ausreichendem Schutzfaktor und gehe nach Möglichkleit nicht nach draußen.
     </string>
-    <string name="connectDoc">Ärzte</string>
     <string name="prevention">Vorsorge</string>
     <string name="loadFromPhone">Gallerie</string>
     <string name="newPhoto">Neue Aufnahme</string>
     <string name="error">Da ist wohl ein Fehler aufgetreten, versuche es bitte noch einmal.</string>
     <string name="diagnosis">Diagnose</string>
     <string name="lookInto">Fragwürdig</string>
-    <string name="begnin">Gutartig</string>
-    <string name="diagnosisMalignant">Suche bitte bei nächster Gelgenheit einen Hautarzt auf und zeige ihm diese Hautläsion. Es besteht die Möglichkeit, dass diese Läsion bösartig ist.</string>
-    <string name="diagnosisBegnin">Diese Läsion ist gutartig. Keine Maßnahmen sind nötig. Behalte deine Muttermale aber weiterhin im Blick</string>
+    <string name="begnin">Gutartig zu</string>
+    <string name="diagnosisMalignant">
+        Suche bitte bei nächster Gelgenheit einen Hautarzt auf und zeige ihm diese Hautläsion.
+        Es besteht die Möglichkeit, dass diese Läsion bösartig ist.
+    </string>
+    <string name="diagnosisBegnin">
+        Diese Läsion ist gutartig. Keine Maßnahmen sind nötig.
+        Behalte deine Muttermale aber weiterhin im Blick
+    </string>
     <string name="yourMoles">Deine Aufnahmen</string>
+    <string name="share">Teile deine Aufnahme</string>
+    <string name="sendToDoc">Sende an Arzt</string>
+    <string name="takenCareOf">Bereits behandelt</string>
+    <string name="delete">Löschen</string>
+    <string name="impressumText">
+        Diese App wurde im Rahmen meiner Masterarbeit entwickelt.
+        Hierbei handelt es sich um einen ersten Prototypen, der sich noch in der Entwicklungsphase befindet.
+        Dein Feedback ist eine große Bereicherung für die weitere Entwicklung dieser App. Also bei Fragen oder Anregungen
+        betreffend die Entwicklung dieser App, kontaktiere mich bitte unter folgender Mail.
+
+        \n\nEntwickler: Bastian Kamp
+    </string>
+    <string name="provideFeedback">Feedback/Fragen</string>
+    <string name="menuItemPrev">Informationen</string>
+    <string name="address">Adresse:\nUniversität Osnabrück \nNeuer Graben\n49074 Osnabrück</string>
+    <string name="uv_index_undefined">
+        Leider kann der aktuelle UV-Index derzeit nicht geladen werden.
+        Klicke unten, um weitere Informationen zum UV-Index zu erhalten.
+    </string>
 
 
 </resources>

@@ -15,6 +15,11 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+
     }
     buildTypes {
         release {
@@ -22,10 +27,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
 }
 
 dependencies {
-    def room_version = "2.2.4"
+    def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -56,11 +66,14 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.7.2")
 
-    implementation ('org.conscrypt:conscrypt-android:2.2.1')
+    implementation('org.conscrypt:conscrypt-android:2.2.1')
 
     //Cropping Images
     implementation 'com.github.yalantis:ucrop:2.2.2'
 
     //Ask for Permission
     implementation 'pub.devrel:easypermissions:3.0.0'
+
+    //PDF Viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.0.3'
 }

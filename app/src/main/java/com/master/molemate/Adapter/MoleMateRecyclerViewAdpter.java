@@ -25,8 +25,12 @@ import com.master.molemate.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -89,20 +93,40 @@ public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRec
         RecyclerViewMoleImageItem currentItem = moleItemsList.get(position);
 
         Bitmap bitmap = BitmapFactory.decodeFile(currentItem.getMoleThumbnail().getPath());
-        double tmpPropDiagnosis = currentItem.getMoleDiagnosis();
+        holder.cardviewMoleThumbnailImage.setImageBitmap(bitmap);
+        holder.cardviewMoleThumbnailImage.setRotation(90f);
+        //holder.cardviewMoleThumbnailImage.setRotation(holder.cardviewMoleThumbnailImage.getRotation()*90f);
 
-        if(tmpPropDiagnosis<25.0){
-            holder.cardviewView.setBackgroundColor(Color.GREEN);
-        } else if (tmpPropDiagnosis<75.0 && tmpPropDiagnosis > 25.0){
-            holder.cardviewView.setBackgroundColor(Color.YELLOW);
-        }else{
-            holder.cardviewView.setBackgroundColor(Color.RED);
+        double tmpPropDiagnosis = currentItem.getMoleDiagnosis();
+        boolean isHandled = currentItem.isHandeld();
+        String tmpDate = currentItem.getCardViewDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        Date d = null;
+        try{
+            d = sdf.parse(tmpDate);
+        }catch (ParseException ex){
+            ex.printStackTrace();
         }
 
-        holder.cardviewMoleThumbnailImage.setImageBitmap(bitmap);
-        holder.cardviewMoleThumbnailImage.setRotation(holder.cardviewMoleThumbnailImage.getRotation()*90f);
+        if(d != null) {
+            sdf.applyPattern("dd.MM.yyyy");
+            tmpDate = sdf.format(d);
+            Log.d(TAG, "onBindViewHolder: Date: " + tmpDate);
+            holder.cardviewMoleText.setText(tmpDate);
+        }
+
+        Log.d(TAG, "onBindViewHolder: Color should be: " + tmpPropDiagnosis);
+
+        if(tmpPropDiagnosis<25.0 && !isHandled){
+            holder.cardviewView.setBackgroundColor(Color.RED);
+        } else if (tmpPropDiagnosis<75.0 && tmpPropDiagnosis > 25.0 && !isHandled){
+            holder.cardviewView.setBackgroundColor(Color.YELLOW);
+        }else if (tmpPropDiagnosis>= 75.0 && !isHandled){
+            holder.cardviewView.setBackgroundColor(Color.GREEN);
+        }
+
         holder.cardviewMoleTitle.setText(currentItem.getCardviewPosText());
-        holder.cardviewMoleText.setText(currentItem.getCardViewDate());
 
     }
 

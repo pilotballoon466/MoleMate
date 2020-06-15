@@ -5,9 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,10 +26,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
 import com.master.molemate.ChooseActionScreen;
+import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
 import com.master.molemate.ImageFileStorage.SupporterClasses.ViewModel_ImageArchive_Communication;
+import com.master.molemate.Impressum.Impressum;
 import com.master.molemate.LoginProcess.LoginActivity;
+import com.master.molemate.Prevention.Prevention;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
@@ -34,7 +40,6 @@ import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyclerViewAdpter.OnMoleListener {
 
@@ -88,7 +93,7 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
         //Adding Toolbar and Title to Toolbar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle(R.string.yourArchive);
         setSupportActionBar(toolbar);
 
 
@@ -121,13 +126,12 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
         //selectFragmentToShow(0);
 
-        Log.e(TAG, "onCreate: " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"");
-
 
         dbCom = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
         dbCom.getAllMolesFromUser(currentUser).observe(this, new Observer<List<EntityMix_User_MoleLib>>() {
             @Override
             public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
+                Log.d(TAG, "onChanged: got Users Moles! " + entityMix_user_moleLibs.size());
                 fragmentViewModelCom.setUserMoleLib(entityMix_user_moleLibs);
                 moleLib = entityMix_user_moleLibs;
 
@@ -141,7 +145,8 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
                             moleEntry.mole_library.getDiagnosis(),
                             moleEntry.mole_library.getMolePosText(),
                             moleEntry.mole_library.getMoleID(),
-                            moleEntry.mole_library.getDiagnosedPropability()
+                            moleEntry.mole_library.getDiagnosedPropability(),
+                            moleEntry.mole_library.isHandled()
                     ));
                 }
 
@@ -196,16 +201,20 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
                 intent = new Intent(this, HomeScreen.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_impressum:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_cancer_free:
+                intent = new Intent(this, Diagnosis_Tool.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_health:
-                intent = new Intent(this, ChooseActionScreen.class);
+                intent = new Intent(this, ImageFileArchive.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_cancer_free:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_prev:
+                intent = new Intent(this, Prevention.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_impressum:
+                intent = new Intent(this, Impressum.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_logout:
@@ -222,16 +231,16 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
         super.onBackPressed();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void onMoleClick(int position) {
         RecyclerViewMoleImageItem moleEntry = moleItemList.get(position);
 
         Log.d(TAG, "onMoleClick: moleEntry: " + moleEntry.getCardViewDate());
+        Log.d(TAG, "onMoleClick: moleEntry: MoleID " + moleEntry.getMoleId());
+
+        Intent intent = new Intent(this, ImageArchiveShowMole.class);
+        intent.putExtra("mole_id",  moleEntry.getMoleId());
+        startActivity(intent);
     }
 }

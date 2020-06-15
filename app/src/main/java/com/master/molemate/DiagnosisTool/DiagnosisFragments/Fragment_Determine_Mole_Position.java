@@ -63,6 +63,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
     private int btnText;    //Color of Button Text
     private boolean isFront; // Boolean for checking whether it is the Front or the Back of the Body
     private boolean isMolePosSet;
+    private String currentFilePath;
 
     @Nullable
     @Override
@@ -99,6 +100,8 @@ public class Fragment_Determine_Mole_Position extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).showBackButton(true);
 
         // TODO: getActivity can be null, need a try catch or something similar
         dataContainer = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(Diagnosis_SharedViewModel.class);
@@ -158,8 +161,6 @@ public class Fragment_Determine_Mole_Position extends Fragment {
             @Override
             public void onClick(View view) {
                 if(pixel != 0 && isMolePosSet) {
-                    ((Diagnosis_Tool)getActivity()).selectFragmentToShowWithTitle("diagnosis");
-
                     Bitmap molePosBitmap = ((BitmapDrawable)blackBodyView.getDrawable()).getBitmap();
                     Uri molePosImageUri = saveMolePosBitmapAsJPG(molePosBitmap);
 
@@ -167,8 +168,10 @@ public class Fragment_Determine_Mole_Position extends Fragment {
                     dataContainer.setMolePosColorCode(pixel);
                     Log.d(TAG, "onClick: MolsPosColor: " + pixel);
                     dataContainer.setIsFront(isFront);
+
+
                     if(molePosImageUri != null) {
-                        dataContainer.setMolePosImage(molePosImageUri);
+                        dataContainer.setMolePosImage(Uri.parse(currentFilePath));
                         ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.DIAGNOSIS);
 
                     }else{
@@ -176,7 +179,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
                                 getActivity(),
                                 "Die Position des Muttermals konnte nicht abgespeichert werden!",
                                 Toast.LENGTH_LONG).show();
-                        ((Diagnosis_Tool)getActivity()).selectFragmentToShow(0);
+                        ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.TAKE_IMAGE);
                     }
 
                 }
@@ -205,7 +208,9 @@ public class Fragment_Determine_Mole_Position extends Fragment {
 
                 }
 
-                File molePosBitmapToJPGFile =new File (""+storageMoleDir+ "/" + moleImageFileName +".jpg");
+                currentFilePath = ""+storageMoleDir+ "/" + moleImageFileName +".jpg";
+
+                File molePosBitmapToJPGFile =new File (currentFilePath);
 
                 molePosImageUri = FileProvider.getUriForFile(
                         getActivity(),

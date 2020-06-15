@@ -1,32 +1,43 @@
 package com.master.molemate.ImageFileStorage.SupporterClasses;
 
 
+import android.net.Uri;
+
 public class RecyclerViewMoleImageItem {
 
     private Uri moleThumbnailUri;
     private String cardViewDate;
-
     private String cardviewText;
     private String cardviewPosText;
     private int moleId;
     private double moleDiagnosis;
+    private boolean isHandeld;
 
 
-    public RecyclerViewMoleImageItem(int moleThumbnail, String cardViewTitle, String cardviewText) {
-        this.moleThumbnail = moleThumbnail;
-        this.cardViewTitle = cardViewTitle;
+    public RecyclerViewMoleImageItem(Uri moleThumbnail,
+                                     String cardViewDate,
+                                     String cardviewText,
+                                     String cardviewPosText,
+                                     int moleId,
+                                     double moleDiagnosis,
+                                     boolean isHandled
+                                    )
+    {
+        this.moleThumbnailUri = moleThumbnail;
+        this.cardViewDate = cardViewDate;
         this.cardviewText = cardviewText;
         this.cardviewPosText = cardviewPosText;
         this.moleId = moleId;
         this.moleDiagnosis = moleDiagnosis;
+        this.isHandeld = isHandled;
     }
 
-    public int  getMoleThumbnail() {
-        return moleThumbnail;
+    public Uri  getMoleThumbnail() {
+        return moleThumbnailUri;
     }
 
-    public void setMoleThumbnail(int moleThumbnail) {
-        this.moleThumbnail = moleThumbnail;
+    public void setMoleThumbnail(Uri moleThumbnail) {
+        this.moleThumbnailUri = moleThumbnail;
     }
 
     public String getCardViewDate() {
@@ -67,5 +78,17 @@ public class RecyclerViewMoleImageItem {
 
     public void setMoleDiagnosis(double moleDiagnosis) {
         this.moleDiagnosis = moleDiagnosis;
+    }
+
+    public boolean isHandeld() {
+        return isHandeld;
+    }
+
+    public void setHandeld(boolean handeld) {
+        isHandeld = handeld;
+    }
+
+    public void setCardViewDate(String cardViewDate) {
+        this.cardViewDate = cardViewDate;
     }
 }

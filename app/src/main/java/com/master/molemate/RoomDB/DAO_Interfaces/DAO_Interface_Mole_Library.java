@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -24,7 +25,7 @@ public interface DAO_Interface_Mole_Library {
     List<Entity_Mole_Library> getAllMoles();
 
     @Query("SELECT * FROM mole_library_table WHERE moleID IN (:id)")
-    List<Entity_Mole_Library> loadAllMolesFromMoleIds(int[] id);
+    LiveData<List<Entity_Mole_Library>> loadAllMolesFromMoleIds(int[] id);
 
     @Query("SELECT mole_pos_color_code FROM mole_library_table WHERE mole_image_uri LIKE :moleImageUri")
     int getColorCodeFromUri(String moleImageUri);

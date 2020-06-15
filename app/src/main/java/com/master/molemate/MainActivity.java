@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private MoleMateDB moleMateDB;
-    private MoleMateDB_Repository moleMateDBRepository;
     private MoleMateDB_ViewModel moleMateDBViewModel;
     private Entity_Users user;
     private List<EntityMix_User_MoleLib> moleUserMix;
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165277",
                     -10000,
                     "Bein",
+                    false,
                     true,
                     "Es scheint alles OK zu sein",
                     99.9
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165317",
                     -20000,
                     "Hand",
+                    false,
                     true,
                     "Es scheint alles OK zu sein",
                     90.9
@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165295",
                     -30000,
                     "Bauch",
+                    false,
                     true,
                     "Es scheint alles OK zu sein",
                     87.9
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     "2131165318",
                     -40000,
                     "Kopf",
+                    false,
                     true,
                     "Es scheint nicht alles OK zu sein",
                     22.9

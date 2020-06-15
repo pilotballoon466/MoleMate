@@ -5,14 +5,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,17 +22,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.ImageFileStorage.ImageFileArchive;
 import com.master.molemate.LoginProcess.LoginActivity;
+import com.master.molemate.Prevention.Prevention;
 import com.master.molemate.R;
-import com.master.molemate.TeleMed.TeleMed;
+import com.master.molemate.Impressum.Impressum;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +38,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import okhttp3.OkHttpClient;
@@ -95,7 +92,12 @@ public class HomeScreen extends AppCompatActivity {
         TextView header = uvInfoPopUp.findViewById(R.id.uv_index_header);
         TextView infoText = uvInfoPopUp.findViewById(R.id.uv_index_low_risk_text);
         Button moreInfoBut = uvInfoPopUp.findViewById(R.id.moreInfoBut);
-        int uvIndexInt = Integer.parseInt((String) uvIndexView.getText());
+
+        String uvIndexValueString = (String) uvIndexView.getText();
+        int uvIndexInt= -1;
+
+        if(!uvIndexValueString.contains("-"))
+            uvIndexInt = Integer.parseInt(uvIndexValueString);
 
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) (width * 0.1));
         infoText.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float) (width * 0.04));
@@ -104,19 +106,19 @@ public class HomeScreen extends AppCompatActivity {
         moreInfoBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("https://www.bfs.de/DE/themen/opt/uv/uv-index/einfuehrung/" +
-                        "einfuehrung.html;jsessionid=E91F0603C8CFB3883E3638000FC19AC0.1_cid339"); // missing 'http://' will cause crashed
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                Intent intent = new Intent(getApplication(), UVIndexInfo.class);
                 startActivity(intent);
             }
         });
 
-        if (uvIndexInt < 3) {
+        if (uvIndexInt < 3 && uvIndexInt > 0) {
             infoText.setText(R.string.uv_index_low_risk);
         } else if (uvIndexInt <= 7 && uvIndexInt >= 3) {
             infoText.setText(R.string.uv_index_mid_risk);
         } else if (uvIndexInt >= 8) {
             infoText.setText(R.string.uv_index_high_risk);
+        }else {
+            infoText.setText(R.string.uv_index_undefined);
         }
 
         uvInfoPopUp.show();
@@ -126,21 +128,25 @@ public class HomeScreen extends AppCompatActivity {
 
     private void onItemSelected(MenuItem menuItem) {
         Intent intent;
-        switch (menuItem.getItemId()) {
+        switch (menuItem.getItemId()){
             case R.id.menu_item_home:
                 intent = new Intent(this, HomeScreen.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_impressum:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_cancer_free:
+                intent = new Intent(this, Diagnosis_Tool.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_health:
-                intent = new Intent(this, ChooseActionScreen.class);
+                intent = new Intent(this, ImageFileArchive.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_cancer_free:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_prev:
+                intent = new Intent(this, Prevention.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_impressum:
+                intent = new Intent(this, Impressum.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_logout:
@@ -177,7 +183,7 @@ public class HomeScreen extends AppCompatActivity {
 
         //Adding Toolbar and Title to Toolabar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.cancerCheckerClass);
+        toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
 
         //Adding the Burgermenu to Toolbar
@@ -192,29 +198,23 @@ public class HomeScreen extends AppCompatActivity {
 
         CardView diagnosisCardview = findViewById(R.id.cardviewDiag);
         CardView storageCardview = findViewById(R.id.cardviewStor);
-        CardView telemedCardview = findViewById(R.id.cardviewTele);
+        CardView telemedCardview = findViewById(R.id.cardviewImpressum);
         CardView prevCardview = findViewById(R.id.cardviewPrev);
 
         Intent intent = null;
 
         switch (view.getId()){
             case R.id.cardviewDiag :
-                Toast.makeText(this, "Dialog",Toast.LENGTH_LONG).show();
                 intent = new Intent(this, Diagnosis_Tool.class);
                 break;
             case R.id.cardviewStor :
-                Toast.makeText(this, "Storage",Toast.LENGTH_LONG).show();
                 intent = new Intent(this, ImageFileArchive.class);
                 break;
-            case R.id.cardviewTele :
-                Toast.makeText(this, "Tele",Toast.LENGTH_LONG).show();
-                intent = new Intent(this, TeleMed.class);
+            case R.id.cardviewImpressum :
+                intent = new Intent(this, Impressum.class);
                 break;
             case R.id.cardviewPrev :
-                Toast.makeText(this, "Prev",Toast.LENGTH_LONG).show();
-                Uri uri = Uri.parse("https://www.kbv.de/media/sp/" +
-                        "Hautkrebs_Frueherkennung_Flyer_Druckvorlage_Deutsch.pdf"); // missing 'http://' will cause crashed
-                intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent = new Intent(this, Prevention.class);
                 break;
         }
 
@@ -229,7 +229,7 @@ public class HomeScreen extends AppCompatActivity {
 
         private String url;
 
-        public UVCall() {
+        UVCall() {
         }
 
         public void run() {
@@ -292,7 +292,7 @@ public class HomeScreen extends AppCompatActivity {
                     .build();
 
             try (okhttp3.Response response = client.newCall(request).execute()) {
-                result = response.body().string();
+                result = Objects.requireNonNull(response.body()).string();
                 Log.i(TAG, result);
                 //result = response.body().string();
                 return result;
@@ -308,37 +308,39 @@ public class HomeScreen extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
 
-            if (response != "") {
-                if (!response.contains("error")) {
+            Log.d(TAG, "onPostExecute: response: " + response);
 
-                    JSONObject jobj;
-                    int uvIndex = 0;
-                    try {
-                        jobj = new JSONObject(response);
-                        Double uvIndexDouble = jobj.getJSONObject("result").getDouble("uv");
-                        uvIndex = (int) Math.round(uvIndexDouble);
+            if (!response.contains("error")) {
 
-                    } catch (JSONException err) {
-                        Log.d("Error", err.toString());
-                    }
+                JSONObject jobj;
+                int uvIndex = 0;
+                try {
+                    jobj = new JSONObject(response);
+                    Double uvIndexDouble = jobj.getJSONObject("result").getDouble("uv");
+                    uvIndex = (int) Math.round(uvIndexDouble);
 
-
-                    if (uvIndex <= 3) {
-                        uvIndexView.setTextColor(Color.GREEN);
-                    } else if (uvIndex <= 6 && uvIndex > 3) {
-                        uvIndexView.setTextColor(Color.BLUE);
-                    } else if (uvIndex <= 8 && uvIndex > 6) {
-                        uvIndexView.setTextColor(Color.YELLOW);
-                    } else if (uvIndex <= 11 && uvIndex > 8) {
-                        uvIndexView.setTextColor(Color.RED);
-                    } else if (uvIndex > 11) {
-                        uvIndexView.setTextColor(Color.BLACK);
-                    }
-
-                    uvIndexView.setText(Integer.toString(uvIndex));
+                } catch (JSONException err) {
+                    Log.d("Error", err.toString());
                 }
+
+                Log.d("The UV-Index", " " + Integer.toString(uvIndex) );
+
+
+                if (uvIndex <= 3) {
+                    uvIndexView.setTextColor(Color.GREEN);
+                } else if (uvIndex <= 6 && uvIndex > 3) {
+                    uvIndexView.setTextColor(Color.BLUE);
+                } else if (uvIndex <= 8 && uvIndex > 6) {
+                    uvIndexView.setTextColor(Color.YELLOW);
+                } else if (uvIndex <= 11 && uvIndex > 8) {
+                    uvIndexView.setTextColor(Color.RED);
+                } else if (uvIndex > 11) {
+                    uvIndexView.setTextColor(Color.BLACK);
+                }
+
+                uvIndexView.setText(Integer.toString(uvIndex));
             }
-        }
+            }
     }
 
     private static class WeatherCrawlerAsyncTask extends AsyncTask<String, String, String> {
@@ -357,7 +359,7 @@ public class HomeScreen extends AppCompatActivity {
                     .build();
 
             try (okhttp3.Response response = client.newCall(request).execute()) {
-                result = response.body().string();
+                result = Objects.requireNonNull(response.body()).string();
                 Log.i(TAG, result);
                 //result = response.body().string();
                 return result;
@@ -373,39 +375,36 @@ public class HomeScreen extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
 
+             if (!response.contains("error")) {
 
-            if (response != "") {
-                if (!response.contains("error")) {
+                JSONObject jobj;
+                int actTempC = -100;
+                String descrp = "";
+                int sunrise=0;
+                int sunset=0;
+                int actTime=0;
 
-                    JSONObject jobj;
-                    int actTempC = -100;
-                    String descrp = "";
-                    int sunrise=0;
-                    int sunset=0;
-                    int actTime=0;
+                try {
+                    jobj = new JSONObject(response);
+                    descrp = ((JSONObject)jobj.getJSONArray("weather").get(0)).getString("description");
 
-                    try {
-                        jobj = new JSONObject(response);
-                        descrp = ((JSONObject)jobj.getJSONArray("weather").get(0)).getString("description");
+                    Double actTempDoubK = jobj.getJSONObject("main").getDouble("temp");
+                    actTempC = (int) Math.round((actTempDoubK-273.15)); //Convert Kalvin to Celsius °Kalvin-273.15
 
-                        Double actTempDoubK = jobj.getJSONObject("main").getDouble("temp");
-                        actTempC = (int) Math.round((actTempDoubK-273.15)); //Convert Kalvin to Celsius °Kalvin-273.15
+                    sunrise = jobj.getJSONObject("sys").getInt("sunrise");
+                    sunset = jobj.getJSONObject("sys").getInt("sunset");
+                    actTime = jobj.getInt("dt");
 
-                        sunrise = jobj.getJSONObject("sys").getInt("sunrise");
-                        sunset = jobj.getJSONObject("sys").getInt("sunset");
-                        actTime = jobj.getInt("dt");
-
-                    } catch (JSONException err) {
-                        Log.d("Error", err.toString());
-                    }
-
-                    if(actTempC != -100){
-                        tempView.setText(actTempC+"°C");
-                    }
-
-                    setWeatherIcon(sunrise, sunset, actTime, descrp);
-
+                } catch (JSONException err) {
+                    Log.d("Error", err.toString());
                 }
+
+                if(actTempC != -100){
+                    tempView.setText(actTempC+"°C");
+                }
+
+                setWeatherIcon(sunrise, sunset, actTime, descrp);
+
             }
         }
     }
@@ -433,7 +432,7 @@ public class HomeScreen extends AppCompatActivity {
                 } else if (descrp.equals("few clouds")) {
                     weatherIconID = R.drawable.lightly_cloudy;
                 } else if(descrp.equals("scattered clouds")){
-                    weatherIconID = R.drawable.partly_cloudy_moon;
+                    weatherIconID = R.drawable.partly_cloudy;
                 } else if (descrp.equals("broken clouds")) {
                     weatherIconID = R.drawable.cloundy;
                 } else if (descrp.equals("rain")) {

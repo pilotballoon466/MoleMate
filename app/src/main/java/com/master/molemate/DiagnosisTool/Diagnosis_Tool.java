@@ -9,11 +9,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,17 +26,32 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.master.molemate.Adapter.DiagnosisStatePageAdapter;
 import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Check_Image;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Determine_Mole_Position;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Diagnosis;
 import com.master.molemate.DiagnosisTool.DiagnosisFragments.Fragment_Take_Picture;
-import com.master.molemate.ImageFileStorage.Fragment_Selected_BodyPart_Archive;
+import com.master.molemate.HomeScreen.HomeScreen;
+import com.master.molemate.ImageFileStorage.ImageFileArchive;
+import com.master.molemate.Impressum.Impressum;
+import com.master.molemate.LoginProcess.LoginActivity;
+import com.master.molemate.MainActivity;
+import com.master.molemate.Prevention.Prevention;
 import com.master.molemate.R;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class Diagnosis_Tool extends AppCompatActivity {
 
     private static final String TAG = "Diagnosis_Tool";
+
+    public static final String TAKE_IMAGE = "take_image";
+    public static final String CHECK_IMAGE = "check_image";
+    public static final String MOLE_POSITION = "mole_position";
+    public static final String DIAGNOSIS = "diagnosis";
+    private static final int REQUESTPERMISSIONCODE = 1;
+
 
     ViewPager fragmentContainer;
     DiagnosisStatePageAdapter adapter;
@@ -62,7 +79,7 @@ public class Diagnosis_Tool extends AppCompatActivity {
 
         //Adding Toolbar and Title to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitle("Mole Screening");
         setSupportActionBar(toolbar);
 
         //Adding the Burgermenu to Toolbar
@@ -126,12 +143,11 @@ public class Diagnosis_Tool extends AppCompatActivity {
     }
 
     private void setFragmentsInViewPagerAdapter(){
-        adapter = new DiagnosisStatePageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Fragment_Take_Picture(), "take_picture");
-        adapter.addFragment(new Fragment_Check_Image(), "check_Image");
-        adapter.addFragment(new Fragment_Determine_Mole_Position(), "body_position");
-        adapter.addFragment(new Fragment_Diagnosis(), "diagnosis");
-        adapter.addFragment(new Fragment_Save_Mole_Diagnosis(), "check_and_save");
+        adapter = new DiagnosisStatePageAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter.addFragment(new Fragment_Take_Picture(), TAKE_IMAGE);
+        adapter.addFragment(new Fragment_Check_Image(), CHECK_IMAGE);
+        adapter.addFragment(new Fragment_Determine_Mole_Position(), MOLE_POSITION);
+        adapter.addFragment(new Fragment_Diagnosis(), DIAGNOSIS);
         fragmentContainer.setAdapter(adapter);
     }
 
@@ -142,16 +158,24 @@ public class Diagnosis_Tool extends AppCompatActivity {
                 intent = new Intent(this, HomeScreen.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_impressum:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_cancer_free:
+                intent = new Intent(this, Diagnosis_Tool.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_health:
-                intent = new Intent(this, ChooseActionScreen.class);
+                intent = new Intent(this, ImageFileArchive.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_item_cancer_free:
-                intent = new Intent(this, ChooseActionScreen.class);
+            case R.id.menu_item_prev:
+                intent = new Intent(this, Prevention.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_impressum:
+                intent = new Intent(this, Impressum.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_logout:
+                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -166,13 +190,13 @@ public class Diagnosis_Tool extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
         else if (currentFragmentID >0) {
-            selectFragmentToShow(0);
+            selectFragmentToShow(fragmentContainer.getCurrentItem()-1);
         }else
             super.onBackPressed();
     }
 
 
-    protected void showBackButton(boolean show) {
+    public void showBackButton(boolean show) {
 
         if (show) {
             // Remove hamburger

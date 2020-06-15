@@ -13,6 +13,7 @@ import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.Entities.Entity_Users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -38,6 +39,7 @@ public class MoleMateDB_Repository {
     private LiveData<List<Entity_Users>> users;
     private LiveData<List<EntityMix_User_MoleLib>> moleLibFromUser;
     private LiveData<Entity_Users> activeUser;
+    private LiveData<List<Entity_Mole_Library>> molesById;
     private static int uid;
 
     public MoleMateDB_Repository(Application application) {
@@ -80,14 +82,24 @@ public class MoleMateDB_Repository {
         new InsertMoleAsyncTask(moleLibDao).execute(moleLib_entry);
     }
 
+    void updateMole(Entity_Mole_Library moleLib_entry){
+        new UpdateMoleAsyncTask(moleLibDao).execute(moleLib_entry);
+    }
+
     void deleteMole(Entity_Mole_Library moleLib_entry){
         new DeleteMoleAsyncTask(moleLibDao).execute(moleLib_entry);
     }
 
     LiveData<List<EntityMix_User_MoleLib>> getAllMolesFromUser(int uid){
         //TODO: sollte nur einmal zugewiesen werden!
+        Log.d(TAG, "getAllMolesFromUser: Trigered getting all Moles");
         moleLibFromUser = moleLibDao.getAllMolesFromUser(uid);
         return moleLibFromUser;
+    }
+
+    LiveData<List<Entity_Mole_Library>> getAllMolesFromMoleIds(int[] moleIDs){
+        molesById = moleLibDao.loadAllMolesFromMoleIds(moleIDs);
+        return molesById;
     }
 
     private static class InsertUserAsyncTask extends AsyncTask<Entity_Users,Void,Void>{
@@ -183,6 +195,30 @@ public class MoleMateDB_Repository {
             super.onPostExecute(aVoid);
 
             Log.d(TAG, "onPostExecute: Deleted Mole " + moleUri);
+        }
+    }
+
+    private static class UpdateMoleAsyncTask extends AsyncTask<Entity_Mole_Library, Void, Void>{
+
+        private DAO_Interface_Mole_Library moleLibDao;
+        private String moleUri;
+
+        private UpdateMoleAsyncTask(DAO_Interface_Mole_Library moleLibDao){
+            this.moleLibDao = moleLibDao;
+        }
+
+        @Override
+        protected Void doInBackground(Entity_Mole_Library... entity_mole_libraries) {
+            moleUri = entity_mole_libraries[0].getMoleImageUri();
+            moleLibDao.update(entity_mole_libraries[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.d(TAG, "onPostExecute: Update Mole " + moleUri);
         }
     }
 }

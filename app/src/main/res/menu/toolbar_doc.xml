@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/searchMenu"
-        android:icon="@drawable/ic_search"
-        android:title="@string/yourArchive"
-        android:tooltipText="Suche"
+    <item android:id="@+id/menu_item_add"
+        android:icon="@drawable/ic_email"
+        android:title="@string/mail"
+        android:tooltipText="Sende Feedback"
         android:iconTint="@color/btnTextColor"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
 
 </menu>
