@@ -300,14 +300,11 @@ public class Fragment_Diagnosis extends Fragment {
         }else if(tmpDateOfCreation == null){
             return false;
 
-
-        }else if(tmpDiagnosisText == null){
+        }else if(tmpDiagnosisText.equals("")){
             return false;
-
 
         }else if(tmpMolePosColorCode == 0){
             return false;
-
 
         }else if(tmpUriMolePosBitmap == null){
             return false;

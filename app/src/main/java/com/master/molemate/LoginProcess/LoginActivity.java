@@ -3,7 +3,9 @@ package com.master.molemate.LoginProcess;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordView;
     private Button loginButton;
     private Button registrationButton;
+    private SharedPreferences sharedPref;
+
 
     private FirebaseAuth auth;
 
@@ -49,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordView.setText("Passwort1234");
 
         auth = FirebaseAuth.getInstance();
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file),Context.MODE_PRIVATE);
 
         progressBar = new ProgressBar(this);
 
@@ -94,6 +99,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+
+                            String uid = auth.getUid();
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("key", uid);
+                            editor.apply();
                             successfulLogin(tmpMail);
 
                         } else {

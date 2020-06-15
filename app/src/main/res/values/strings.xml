@@ -85,6 +85,7 @@
         Leider kann der aktuelle UV-Index derzeit nicht geladen werden.
         Klicke unten, um weitere Informationen zum UV-Index zu erhalten.
     </string>
+    <string name="preference_file">com.master.molemate.PREFERENCE_FILE</string>
 
 
 </resources>
