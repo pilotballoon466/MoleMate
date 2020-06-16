@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
 import com.master.molemate.ChooseActionScreen;
+import com.master.molemate.DataSecurity.TextConverter;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
@@ -35,11 +38,13 @@ import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.Prevention.Prevention;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
+import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyclerViewAdpter.OnMoleListener {
 
@@ -47,6 +52,9 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
     public static final String SELECTED_BODYPART = "selected_bodyPart";
     public static final String SELECT_A_BODYPART = "select_a_bodyPart";
+
+    private SharedPreferences sharedPref;
+    private TextConverter encrypter;
 
 
     NavigationView mainMenu;
@@ -91,6 +99,9 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
         mainMenu.setItemIconTintList(null);
 
+        SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.preference_file), Context.MODE_PRIVATE);
+
+        encrypter = new TextConverter(Objects.requireNonNull(sharedPref.getString("key", "")));
         //Adding Toolbar and Title to Toolbar
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.yourArchive);
@@ -139,6 +150,8 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
                     Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
 
+                    decryptData(moleEntry);
+
                     moleItemList.add(new RecyclerViewMoleImageItem(
                             Uri.parse(moleEntry.mole_library.getMoleImageUri()),
                             moleEntry.mole_library.getDateMoleImageCreation(),
@@ -166,6 +179,27 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
                 Log.e(TAG, "onClick: View insights " + view.toString() );
             }
         });
+    }
+
+    private void decryptData(EntityMix_User_MoleLib moleEntry) {
+
+            try {
+                moleEntry.mole_library.setMolePosText(encrypter.decrypt(moleEntry.mole_library.getMolePosText()));
+                moleEntry.mole_library.setMoleImageUri(encrypter.decrypt(moleEntry.mole_library.getMoleImageUri()));
+                moleEntry.mole_library.setMolePosBitmapUri(encrypter.decrypt(moleEntry.mole_library.getMolePosBitmapUri()));
+                moleEntry.mole_library.setDiagnosis(encrypter.decrypt(moleEntry.mole_library.getDiagnosis()));
+                moleEntry.mole_library.setMolePosText(encrypter.decrypt(moleEntry.mole_library.getMolePosText()));
+
+                Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.mole_library.getMolePosText() + " dec: " + encrypter.decrypt(moleEntry.mole_library.getMolePosText()));
+                Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.mole_library.getMoleImageUri() + " dec: " + encrypter.decrypt(moleEntry.mole_library.getMoleImageUri()));
+                Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.mole_library.getMolePosBitmapUri() + " dec: " + encrypter.decrypt(moleEntry.mole_library.getMolePosBitmapUri()));
+                Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.mole_library.getDiagnosis() + " dec: " + encrypter.decrypt(moleEntry.mole_library.getDiagnosis()));
+                Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.mole_library.getDateMoleImageCreation() + " dec: " + encrypter.decrypt(moleEntry.mole_library.getDateMoleImageCreation()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
     }
 
 

@@ -17,6 +17,7 @@ import com.master.molemate.RoomDB.Entities.Entity_Users;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 //TODO: Need a LoginScreen and a LoginProcess!
 public class MoleMateDB_ViewModel extends AndroidViewModel {
@@ -40,14 +41,10 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
         //sharedPrefMiniDB = application.getApplicationContext().getSharedPreferences("UserPref", 0); // 0 for private mode
 
         SharedPreferences sharedPref = application.getSharedPreferences(application.getString(R.string.preference_file),Context.MODE_PRIVATE);
-        key = sharedPref.getString("key","");
 
-        Log.d(TAG, "MoleMateDB_ViewModel: key " + key);
-
-        encrypter = new TextConverter(key);
+        encrypter = new TextConverter(Objects.requireNonNull(sharedPref.getString("key", "")));
 
         this.repository = new MoleMateDB_Repository(application);
-
 
     }
 
@@ -64,23 +61,17 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
     }
 
     public void insertUser(Entity_Users user_Entry){
-
-        user_Entry = encryptUser(user_Entry);
-
+        encryptUser(user_Entry);
         repository.insertUser(user_Entry);
     }
 
     public void insertMole(Entity_Mole_Library moleLib_Entry){
-
-        moleLib_Entry = encryptMoleEntry(moleLib_Entry);
-
+        encryptMoleEntry(moleLib_Entry);
         repository.insertMole(moleLib_Entry);
     }
 
     public void updateMole(Entity_Mole_Library moleLib_Entry){
-
-        moleLib_Entry = encryptMoleEntry(moleLib_Entry);
-
+        encryptMoleEntry(moleLib_Entry);
         repository.updateMole(moleLib_Entry);
     }
 
@@ -91,23 +82,24 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
     }
 
     public void deleteMole(Entity_Mole_Library moleLib_Entry){
-
-        moleLib_Entry = encryptMoleEntry(moleLib_Entry);
-
+        encryptMoleEntry(moleLib_Entry);
         repository.deleteMole(moleLib_Entry);
     }
 
     public void deleteUser(Entity_Users user_Entry){
-
-        user_Entry = encryptUser(user_Entry);
-
+        encryptUser(user_Entry);
         repository.deleteUser(user_Entry);
     }
 
-    private Entity_Users encryptUser(Entity_Users user_entry) {
+    private void encryptUser(Entity_Users user_entry) {
 
         try {
-            //moleLib_entry.setMolePosText(encrypter.encrypt(moleLib_entry.getMolePosText()));
+            user_entry.setFirstName(encrypter.encrypt(user_entry.getFirstName()));
+            user_entry.setLastName(encrypter.encrypt(user_entry.getLastName()));
+            user_entry.setMail(encrypter.encrypt(user_entry.getMail()));
+            user_entry.setUserName(encrypter.encrypt(user_entry.getUserName()));
+
+
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getUserName() + " dec: " + encrypter.encrypt(user_entry.getUserName()));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getFirstName() + " dec: " + encrypter.encrypt(user_entry.getFirstName()));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getLastName() + " dec: " + encrypter.encrypt(user_entry.getLastName()));
@@ -123,14 +115,18 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
 
-        return user_entry;
     }
 
-    private Entity_Mole_Library encryptMoleEntry(Entity_Mole_Library moleLib_entry) {
+    private void encryptMoleEntry(Entity_Mole_Library moleLib_entry) {
 
 
         try {
-            //moleLib_entry.setMolePosText(encrypter.encrypt(moleLib_entry.getMolePosText()));
+            moleLib_entry.setMolePosText(encrypter.encrypt(moleLib_entry.getMolePosText()));
+            moleLib_entry.setMoleImageUri(encrypter.encrypt(moleLib_entry.getMoleImageUri()));
+            moleLib_entry.setMolePosBitmapUri(encrypter.encrypt(moleLib_entry.getMolePosBitmapUri()));
+            moleLib_entry.setDiagnosis(encrypter.encrypt(moleLib_entry.getDiagnosis()));
+            moleLib_entry.setMolePosText(encrypter.encrypt(moleLib_entry.getMolePosText()));
+
             Log.d(TAG, "encryptMoleEntry: enc " + moleLib_entry.getMolePosText() + " dec: " + encrypter.encrypt(moleLib_entry.getMolePosText()));
             Log.d(TAG, "encryptMoleEntry: enc " + moleLib_entry.getMoleImageUri() + " dec: " + encrypter.encrypt(moleLib_entry.getMoleImageUri()));
             Log.d(TAG, "encryptMoleEntry: enc " + moleLib_entry.getMolePosBitmapUri() + " dec: " + encrypter.encrypt(moleLib_entry.getMolePosBitmapUri()));
@@ -147,7 +143,6 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
 
-        return moleLib_entry;
     }
 
 }

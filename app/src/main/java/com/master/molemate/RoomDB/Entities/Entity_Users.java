@@ -52,4 +52,20 @@ public class Entity_Users {
     public String getMail() {
         return mail;
     }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 }

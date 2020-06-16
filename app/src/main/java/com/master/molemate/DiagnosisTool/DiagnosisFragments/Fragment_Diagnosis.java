@@ -284,7 +284,7 @@ public class Fragment_Diagnosis extends Fragment {
 
                     dataContainer.deleteAllValues();
 
-                    ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.TAKE_IMAGE);
+                    startActivity(new Intent( getActivity(),HomeScreen.class ));
 
                 }
             }
