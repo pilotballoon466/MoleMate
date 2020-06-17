@@ -101,10 +101,13 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
 
                             String uid = auth.getUid();
+
+                            SharedPreferences sharedPref = getApplication().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("key", uid);
                             editor.apply();
-                            successfulLogin(tmpMail);
+
+                            successfulLogin(tmpMail, uid);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -121,12 +124,14 @@ public class LoginActivity extends AppCompatActivity {
         // [END sign_in_with_email]
     }
 
-    private void successfulLogin(String mail) {
+    private void successfulLogin(String mail, String key) {
 
-        Log.d(TAG, "signInWithEmail:success");
+        Log.d(TAG, "signInWithEmail:success with key: " + key + " mail: " + mail);
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("mail", mail);
+        intent.putExtra("key", key);
+
         startActivity(intent);
     }
 }

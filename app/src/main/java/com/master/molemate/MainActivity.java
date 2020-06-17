@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.master.molemate.DataSecurity.TextConverter;
 import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.RoomDB.DAO_Interfaces.DAO_Interface_Mole_Library;
@@ -21,6 +25,7 @@ import com.master.molemate.RoomDB.MoleMateDB_Repository;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private List<EntityMix_User_MoleLib> moleUserMix;
     private String userMail;
     private static int uid;
+    private TextConverter encrypter;
+    private String userKey;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +49,17 @@ public class MainActivity extends AppCompatActivity {
         //Erstelle statische Klasse für die unteren drei Aufrufe
         //dbFactory in der Art, die die Instance immer wieder anfragt
 
+        sharedPref = getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+
         Intent tmpIntent = getIntent();
 
         userMail = tmpIntent.getStringExtra("mail");
+        userKey = tmpIntent.getStringExtra("key");
+
+        Log.d(TAG, "onCreate: key: " + userKey);
+
+        encrypter = new TextConverter(userKey);
+
 
         moleMateDBViewModel = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
 
@@ -51,24 +67,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Entity_Users entity_users) {
                 user = entity_users;
-                if(user != null) {
+                if(user != null)
+                {
+                    if(decryptUser(user))
+                    {
+                        uid = user.getUid();
+                        Log.d(TAG, "collectedAllUsers() size: " + user.getUserName() + " with id " + uid);
+                        getMolesForUser(uid);
 
-                    uid = user.getUid();
+                    }else {
+                        Toast.makeText(getApplication(), "Dein Nutzer konnte nicht gefunden werden, versuche es bitte erneut!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
 
-                    Log.d(TAG, "collectedAllUsers() size: " + user.getUserName() + " with id " + uid);
-
-                    getMolesForUser(uid);
-
-                }else{
+                }else {
                     Log.d(TAG, "No User!");
 
-                    new PopulatDefaultUserToDBAsyncTask(moleMateDBViewModel).execute();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    if(userMail.equals("default@default.com")){
+                        new PopulatDefaultUserToDBAsyncTask(moleMateDBViewModel).execute();
+                    }
+
+                    //Toast.makeText(getApplication(), "Der Nutzer konnte nicht gefunden werden, versuche es bitte erneut!", Toast.LENGTH_LONG).show();
+                    //Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    //startActivity(intent);
                 }
             }
         });
         Log.d(TAG, "onCreate: This should be the User! " + uid);
+
+    }
+
+    private boolean decryptUser(Entity_Users userEntity) {
+
+        try {
+            userEntity.setUserName(encrypter.decrypt(userEntity.getUserName()));
+            userEntity.setMail(encrypter.decrypt(userEntity.getMail()));
+            userEntity.setLastName(encrypter.decrypt(userEntity.getLastName()));
+            userEntity.setFirstName(encrypter.decrypt(userEntity.getFirstName()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -79,88 +122,22 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
                 moleUserMix = entityMix_user_moleLibs;
                 if(moleUserMix.size() == 0){
-                    //new PopulateMoleDBAsyncTask(moleMateDBViewModel, tmpUid).execute();
 
                 }
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("uid", tmpUid);
+                editor.putString("key", userKey);
+                editor.apply();
 
                 Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
                 intent.putExtra("currentUser", tmpUid);
                 startActivity(intent);
-
-
             }
         });
 
     }
 
-    private static class PopulateMoleDBAsyncTask extends AsyncTask<Void, Void, Void> {
-        private MoleMateDB_ViewModel moleLibDao;
-        private int uid;
-
-        private PopulateMoleDBAsyncTask(MoleMateDB_ViewModel moleUserDB, int uid){
-            this.moleLibDao = moleUserDB;
-            this.uid = uid;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            moleLibDao.insertMole(new Entity_Mole_Library(
-                    "12.01.12 13:12.14",
-                    uid,
-                    "2131165277",
-                    "2131165277",
-                    -10000,
-                    "Bein",
-                    false,
-                    true,
-                    "Es scheint alles OK zu sein",
-                    99.9
-            ));
-            moleLibDao.insertMole(new Entity_Mole_Library(
-                    "20.01.12 13:12.14",
-                    uid,
-                    "2131165317",
-                    "2131165317",
-                    -20000,
-                    "Hand",
-                    false,
-                    true,
-                    "Es scheint alles OK zu sein",
-                    90.9
-            ));
-            moleLibDao.insertMole(new Entity_Mole_Library(
-                    "28.01.12 13:12.14",
-                    uid,
-                    "2131165295",
-                    "2131165295",
-                    -30000,
-                    "Bauch",
-                    false,
-                    true,
-                    "Es scheint alles OK zu sein",
-                    87.9
-            ));
-            moleLibDao.insertMole(new Entity_Mole_Library(
-                    "30.01.12 13:12.14",
-                    uid,
-                    "2131165318",
-                    "2131165318",
-                    -40000,
-                    "Kopf",
-                    false,
-                    true,
-                    "Es scheint nicht alles OK zu sein",
-                    22.9
-            ));
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Log.d(TAG, "onPostExecute: inserted example Mole Entries");
-        }
-    }
 
     private static class PopulatDefaultUserToDBAsyncTask extends AsyncTask<Void, Void, Void> {
         private MoleMateDB_ViewModel moleLibDao;

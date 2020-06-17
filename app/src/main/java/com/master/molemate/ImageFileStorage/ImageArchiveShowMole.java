@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
+import com.master.molemate.DataSecurity.TextConverter;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
 import com.master.molemate.R;
@@ -57,6 +60,7 @@ public class ImageArchiveShowMole extends AppCompatActivity {
     Toolbar toolbar;
     private MoleMateDB_ViewModel dbCom;
     private Entity_Mole_Library molesById;
+    private TextConverter encrypter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class ImageArchiveShowMole extends AppCompatActivity {
         diagnosisTextView = findViewById(R.id.show_diagnosis_text);
         deleteMoleButton = findViewById(R.id.show_takenCareOf_button);
         sendToDocButton = findViewById(R.id.show_send_to_Doc_button);
+
+        SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.preference_file), Context.MODE_PRIVATE);
+        encrypter = new TextConverter(Objects.requireNonNull(sharedPref.getString("key", "")));
 
         //Adding Toolbar and Title to Toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -95,6 +102,7 @@ public class ImageArchiveShowMole extends AppCompatActivity {
 
                         if(molesById != null) {
                             Log.d(TAG, "onChanged: MolesByIDs: " + molesById.getMoleImageUri());
+                            decryptData(molesById);
                             settingUpImages();
                             settingUpTextViews();
                         }
@@ -108,6 +116,27 @@ public class ImageArchiveShowMole extends AppCompatActivity {
 
             intent = new Intent(this, ImageFileArchive.class);
             startActivity(intent);
+        }
+
+    }
+
+    private void decryptData(Entity_Mole_Library moleEntry) {
+
+        try {
+            moleEntry.setMolePosText(encrypter.decrypt(moleEntry.getMolePosText()));
+            moleEntry.setMoleImageUri(encrypter.decrypt(moleEntry.getMoleImageUri()));
+            moleEntry.setMolePosBitmapUri(encrypter.decrypt(moleEntry.getMolePosBitmapUri()));
+            moleEntry.setDiagnosis(encrypter.decrypt(moleEntry.getDiagnosis()));
+            moleEntry.setMolePosText(encrypter.decrypt(moleEntry.getMolePosText()));
+
+            Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.getMolePosText() + " dec: " + encrypter.decrypt(moleEntry.getMolePosText()));
+            Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.getMoleImageUri() + " dec: " + encrypter.decrypt(moleEntry.getMoleImageUri()));
+            Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.getMolePosBitmapUri() + " dec: " + encrypter.decrypt(moleEntry.getMolePosBitmapUri()));
+            Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.getDiagnosis() + " dec: " + encrypter.decrypt(moleEntry.getDiagnosis()));
+            Log.d(TAG, "encryptMoleEntry: enc " + moleEntry.getDateMoleImageCreation() + " dec: " + encrypter.decrypt(moleEntry.getDateMoleImageCreation()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

@@ -1,6 +1,8 @@
 package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -28,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.master.molemate.DiagnosisTool.Diagnosis_SharedViewModel;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.HomeScreen.HomeScreen;
+import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
@@ -110,6 +113,9 @@ public class Fragment_Diagnosis extends Fragment {
     private boolean tmpIsFrontside;
     private Entity_Mole_Library moleEntry;
 
+    private int currentUser;
+
+
     // priority queue that will hold the top results from the CNN
     private PriorityQueue<Map.Entry<String, Float>> sortedLabels =
             new PriorityQueue<>(
@@ -140,7 +146,15 @@ public class Fragment_Diagnosis extends Fragment {
 
         settingUpSaveButton();
 
+        SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
+        currentUser = sharedPref.getInt("uid", -1);
 
+        if(currentUser == -1){
+            Log.e(TAG, "onCreate: current User == -1");
+            Toast.makeText(getActivity(), "Beim Laden deiner Daten ist leider ein Fehler aufgetreten, versuche es nochmal!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
 
         return layout;
     }
@@ -270,7 +284,7 @@ public class Fragment_Diagnosis extends Fragment {
                 if(checkData()){
                     moleEntry = new Entity_Mole_Library(
                             tmpDateOfCreation,
-                            1,
+                            currentUser,
                             tmpUriMoleImage.getPath(),
                             tmpUriMolePosBitmap.getPath(),
                             -10000,

@@ -21,12 +21,13 @@
         android:roundIcon="@mipmap/molemate_launcher_ic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Prevention.Prevention" />
         <activity android:name=".Impressum.Impressum" />
         <activity android:name=".HomeScreen.HomeScreen" />
-        <activity android:name=".HomeScreen.UVIndexInfo"
-            android:parentActivityName=".HomeScreen.HomeScreen"></activity>
-
+        <activity
+            android:name=".HomeScreen.UVIndexInfo"
+            android:parentActivityName=".HomeScreen.HomeScreen" />
         <activity android:name=".DiagnosisTool.Diagnosis_Tool" />
         <activity
             android:name=".ImageFileStorage.ImageFileArchive"
@@ -42,6 +43,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".LoginProcess.PersonalInformation">
+
         </activity>
         <activity android:name=".MainActivity" />
 

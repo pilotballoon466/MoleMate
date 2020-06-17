@@ -86,6 +86,23 @@
         Klicke unten, um weitere Informationen zum UV-Index zu erhalten.
     </string>
     <string name="preference_file">com.master.molemate.PREFERENCE_FILE</string>
+    <string name="personalInfo">Damit wir deine Risikogruppe besser bestimmen können, benötigen wir folgende Informationen:</string>
+    <string name="userInfo">Nutzerangaben</string>
+    <string name="firstName">Vorname</string>
+    <string name="lastName">Nachname</string>
+    <string name="zipCode">Postleitzahl</string>
+    <string name="age">Dein Alter</string>
+    <string name="help">Hilfe!</string>
+    <string name="skinTypeHelp"> <b>Hauttyp I:</b> helle Haut mit Sommersprossen, blonde oder rote Haare, grüne oder blaue Augen
+        \n\n<b>Hauttyp II:</b> helle Haut, blonde Haare, blaue oder grüne Augen
+        \n\n<b>Hauttyp III:</b> leicht getönte, mittelhelle Haut, dunkle Haare, braune Augen
+        \n\n<b>Hauttyp IV:</b> Von Natur aus dunkle Haut, schwarze oder dunkle Haare, braune Augen</string>
+    <string name="skinType">Hauttyp (1-4)</string>
+    <string name="infoUserData">Wir benötigen ein paar persönliche Informationen,
+        damit wir deine Risikogruppe besser bestimmen können und
+        dir eine optimale Gesundheitsvorsorge zuführen zu können!</string>
+    <string name="sendInformation">Daten Abschicken</string>
+    <string name="error_invalid">Invalide</string>
 
 
 </resources>

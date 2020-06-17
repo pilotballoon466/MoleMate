@@ -32,7 +32,6 @@ public class UserRegistration extends AppCompatActivity {
     private Button registrateButton;
     private Button backButton;
 
-    private FirebaseAuth authDB;
 
     private String mail;
     private String password;
@@ -50,7 +49,6 @@ public class UserRegistration extends AppCompatActivity {
         registrateButton = findViewById(R.id.registrateButton);
         backButton = findViewById(R.id.backButton);
 
-        authDB = FirebaseAuth.getInstance();
 
         settingUpRegistrateButton();
         settingUpBackButton();
@@ -71,44 +69,17 @@ public class UserRegistration extends AppCompatActivity {
         registrateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(checkInputData()){
-                    registrateUserInFirebase();
+                    Intent intent = new Intent(getApplication(), PersonalInformation.class);
+                    intent.putExtra("mail", mail);
+                    intent.putExtra("password", password);
+                    startActivity(intent);
                 }else{
                     focusView.requestFocus();
                 }
             }
         });
-    }
-
-    private void registrateUserInFirebase() {
-        authDB.createUserWithEmailAndPassword(mail, password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success");
-                        String uid = authDB.getCurrentUser().getUid();
-
-                        successfulRegistration(uid);
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        focusView = null;
-                        mailView.setError(getString(R.string.error_invalid_email));
-                        focusView = mailView;
-                        focusView.requestFocus();
-
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    }
-
-                }
-            });
-    }
-
-    private void successfulRegistration(String uid) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("uid", uid);
-        startActivity(intent);
     }
 
     /**

@@ -15,7 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +22,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.master.molemate.Adapter.MoleMateFragmentStatePagerAdapter;
 import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
-import com.master.molemate.ChooseActionScreen;
 import com.master.molemate.DataSecurity.TextConverter;
 import com.master.molemate.DiagnosisTool.Diagnosis_Tool;
 import com.master.molemate.HomeScreen.HomeScreen;
@@ -38,7 +37,6 @@ import com.master.molemate.LoginProcess.LoginActivity;
 import com.master.molemate.Prevention.Prevention;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.EntityMix_User_MoleLib;
-import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.MoleMateDB_ViewModel;
 
 import java.io.File;
@@ -100,8 +98,9 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
         mainMenu.setItemIconTintList(null);
 
         SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.preference_file), Context.MODE_PRIVATE);
-
         encrypter = new TextConverter(Objects.requireNonNull(sharedPref.getString("key", "")));
+        currentUser = sharedPref.getInt("uid",-1);
+
         //Adding Toolbar and Title to Toolbar
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.yourArchive);
@@ -130,8 +129,6 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
         moleRecyclerView.setAdapter(moleRecyclerViewAdapter);
 
 
-        currentUser = getIntent().getIntExtra("currentUser", 1);
-
 
         //addFragmentsToViewPager();
 
@@ -139,37 +136,45 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
 
 
         dbCom = new ViewModelProvider(this).get(MoleMateDB_ViewModel.class);
-        dbCom.getAllMolesFromUser(currentUser).observe(this, new Observer<List<EntityMix_User_MoleLib>>() {
-            @Override
-            public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
-                Log.d(TAG, "onChanged: got Users Moles! " + entityMix_user_moleLibs.size());
-                fragmentViewModelCom.setUserMoleLib(entityMix_user_moleLibs);
-                moleLib = entityMix_user_moleLibs;
 
-                for(EntityMix_User_MoleLib moleEntry : moleLib){
+        if(currentUser != -1) {
+            dbCom.getAllMolesFromUser(currentUser).observe(this, new Observer<List<EntityMix_User_MoleLib>>() {
+                @Override
+                public void onChanged(List<EntityMix_User_MoleLib> entityMix_user_moleLibs) {
+                    Log.d(TAG, "onChanged: got Users Moles! " + entityMix_user_moleLibs.size());
+                    fragmentViewModelCom.setUserMoleLib(entityMix_user_moleLibs);
+                    moleLib = entityMix_user_moleLibs;
 
-                    Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
+                    for (EntityMix_User_MoleLib moleEntry : moleLib) {
 
-                    decryptData(moleEntry);
+                        Log.d(TAG, "extractingImagesAccordingBodyPart: foundMole " + moleEntry.mole_library.getMoleImageUri());
 
-                    moleItemList.add(new RecyclerViewMoleImageItem(
-                            Uri.parse(moleEntry.mole_library.getMoleImageUri()),
-                            moleEntry.mole_library.getDateMoleImageCreation(),
-                            moleEntry.mole_library.getDiagnosis(),
-                            moleEntry.mole_library.getMolePosText(),
-                            moleEntry.mole_library.getMoleID(),
-                            moleEntry.mole_library.getDiagnosedPropability(),
-                            moleEntry.mole_library.isHandled()
-                    ));
+                        decryptData(moleEntry);
+
+                        moleItemList.add(new RecyclerViewMoleImageItem(
+                                Uri.parse(moleEntry.mole_library.getMoleImageUri()),
+                                moleEntry.mole_library.getDateMoleImageCreation(),
+                                moleEntry.mole_library.getDiagnosis(),
+                                moleEntry.mole_library.getMolePosText(),
+                                moleEntry.mole_library.getMoleID(),
+                                moleEntry.mole_library.getDiagnosedPropability(),
+                                moleEntry.mole_library.isHandled()
+                        ));
+                    }
+
+                    moleRecyclerViewAdapter.setFullList();
+                    moleRecyclerViewAdapter.notifyDataSetChanged();
+
+
+                    Log.d(TAG, "onChanged: moleLib " + moleLib.size());
                 }
-
-                moleRecyclerViewAdapter.setFullList();
-                moleRecyclerViewAdapter.notifyDataSetChanged();
-
-
-                Log.d(TAG, "onChanged: moleLib " + moleLib.size());
-            }
-        });
+            });
+        }else{
+            Log.e(TAG, "onCreate: current User == -1");
+            Toast.makeText(this, "Beim Laden deiner Daten ist leider ein Fehler aufgetreten, versuche es nochmal!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         moleRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override

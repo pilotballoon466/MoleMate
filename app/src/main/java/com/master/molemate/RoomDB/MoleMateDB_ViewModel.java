@@ -53,7 +53,17 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
     }
 
     public LiveData<Entity_Users> getUserByMail(String mail){
+        mail = encryptMail(mail);
         return repository.getUserByMail(mail);
+    }
+
+    private String encryptMail(String mail) {
+        try {
+            mail = encrypter.encrypt(mail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mail;
     }
 
     public LiveData<List<Entity_Mole_Library>> getAllMolesFromMoleIds(int[] moleIDs){
