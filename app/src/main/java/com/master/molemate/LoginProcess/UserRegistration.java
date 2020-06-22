@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.master.molemate.LoginProcess.LoginActivity;
@@ -46,6 +47,7 @@ public class UserRegistration extends AppCompatActivity {
         mailView = findViewById(R.id.userMailText);
         mailConfirmView = findViewById(R.id.userMailConfirmation);
         passwordView = findViewById(R.id.userPassword);
+
         registrateButton = findViewById(R.id.registrateButton);
         backButton = findViewById(R.id.backButton);
 
@@ -82,6 +84,45 @@ public class UserRegistration extends AppCompatActivity {
         });
     }
 
+    private boolean validateMail(EditText toCheckMail){
+
+        String mail = toCheckMail.getText().toString().trim();
+        // Check for a valid email address.
+        if (mail.isEmpty()) {
+            toCheckMail.setError(getString(R.string.error_field_required));
+            focusView = toCheckMail;
+            return false;
+        } else if (!isEmailValid(mail)) {
+            toCheckMail.setError(getString(R.string.error_invalid_email));
+            focusView = toCheckMail;
+            return false;
+        } else {
+            toCheckMail.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword(EditText toCheckPassword) {
+        // Check for a valid password, if the user entered one.
+
+        String password = toCheckPassword.getText().toString().trim();
+
+        if (password.isEmpty()) {
+            toCheckPassword.setError(getString(R.string.error_field_required));
+            focusView = toCheckPassword;
+            return false;
+
+        } else if (!isPasswordValid(password)) {
+            toCheckPassword.setError(getString(R.string.passwordRequirements));
+            focusView = toCheckPassword;
+            return false;
+
+        }else {
+            toCheckPassword.setError(null);
+            return true;
+        }
+    }
+
     /**
      *
      * first_registration_step() collects the input Data from the perspective fields and verifies the data
@@ -93,46 +134,26 @@ public class UserRegistration extends AppCompatActivity {
         passwordView.setError(null);
 
         // Store values at the time of the login attempt.
+        //
+        mail = mailView.getText().toString().trim();;
+        password = passwordView.getText().toString().trim();;
+        String confirmationMail = mailConfirmView.getText().toString().trim();;
 
-        mail = mailView.getText().toString().trim();
-        password = passwordView.getText().toString().trim();
-        String confirmationMail = mailConfirmView.getText().toString().trim();
+        boolean valid = true;
 
-        boolean cancel = false;
-
-
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmationMail)) {
-            passwordView.setError(getString(R.string.error_field_required));
-            focusView = passwordView;
-            cancel = true;
-
-        } else if (!isPasswordValid(password)) {
-            passwordView.setError(getString(R.string.error_invalid_password));
-            focusView = passwordView;
-            cancel = true;
-
-        } else if(!mail.equals(confirmationMail)){
+        if(!validateMail(mailView) | !validateMail(mailConfirmView) | !validatePassword(passwordView)){
+            valid = false;
+        }else if (!mail.equals(confirmationMail)){
             mailView.setError(getString(R.string.error_mails_not_equals));
-            focusView = mailView;
-            cancel = true;
+            mailConfirmView.setError(getString(R.string.error_mails_not_equals));
+            valid = false;
         }
 
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(mail)) {
-            mailView.setError(getString(R.string.error_field_required));
-            focusView = mailView;
-            cancel = true;
-        } else if (!isEmailValid(mail)) {
-            mailView.setError(getString(R.string.error_invalid_email));
-            focusView = mailView;
-            cancel = true;
-        }
-
-        return !cancel;
+        return valid;
 
     }
+
+
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_PASSWORD_REGEX = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$", Pattern.CASE_INSENSITIVE);

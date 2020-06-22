@@ -3,6 +3,7 @@ package com.master.molemate.DiagnosisTool.DiagnosisFragments;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,7 +50,7 @@ public class Fragment_Take_Picture extends Fragment {
     private static final int RESULT_LOAD_IMG = 2;
     private static final int CROP_IMAGE_REQ = 3;
 
-    private Date dateOfCreation = new Date();
+    private Date dateOfCreation;
     private String timeStamp;
 
     private Diagnosis_SharedViewModel viewModel;
@@ -69,8 +70,17 @@ public class Fragment_Take_Picture extends Fragment {
         loadPicCardV = layout.findViewById(R.id.cardviewLoadPic);
 
         settingUpButtons();
+        dateOfCreation = new Date();
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmsss").format(dateOfCreation);
         return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dateOfCreation = new Date();
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmsss").format(dateOfCreation);
+
     }
 
     @Override
@@ -78,6 +88,8 @@ public class Fragment_Take_Picture extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         moleDBHandler = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MoleMateDB_ViewModel.class);
+        ((Diagnosis_Tool)getActivity()).showBackButton(false);
+
 
         viewModel = new ViewModelProvider(getActivity()).get(Diagnosis_SharedViewModel.class);
         viewModel.getMoleImage().observe(getViewLifecycleOwner(), new Observer<Uri>() {
@@ -233,7 +245,7 @@ public class Fragment_Take_Picture extends Fragment {
     private File createImageFile() throws IOException, NullPointerException {
 
 
-        String moleImageFileName = "MOLE_" + timeStamp + "_";
+        String moleImageFileName = "MOLE_" + timeStamp;
 
 
         //TODO what is @notNullable or @Nullable
@@ -250,7 +262,5 @@ public class Fragment_Take_Picture extends Fragment {
 
         return moleImageFile;
     }
-
-
 
 }

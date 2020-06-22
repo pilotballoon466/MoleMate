@@ -28,11 +28,12 @@
     <string name="arms">Arme</string>
     <string name="legs">Beine</string>
     <string name="password">Passwort</string>
+    <string name="passwordRequirements">1 Großbuchstabe, 1 Zahl und min. 8 Zeichen</string>
     <string name="login">Anmelden</string>
     <string name="signIn">Registieren</string>
     <string name="mail">Email</string>
     <string name="error_invalid_email">Die Email Adresse scheint nicht zu stimmen</string>
-    <string name="error_field_required">Es fehlen Angaben</string>
+    <string name="error_field_required">Das Feld ist nicht ausgefüllt!</string>
     <string name="error_mails_not_equals">Die Email Adressen stimmen nicht überein</string>
     <string name="error_invalid_password">Das Passwort entspricht nicht den Vorgaben</string>
     <string name="mail_confirmation">Email (wiederholen)</string>
@@ -102,7 +103,7 @@
         damit wir deine Risikogruppe besser bestimmen können und
         dir eine optimale Gesundheitsvorsorge zuführen zu können!</string>
     <string name="sendInformation">Daten Abschicken</string>
-    <string name="error_invalid">Invalide</string>
+    <string name="error_invalid">Fehlerhafte Eingabe</string>
 
 
 </resources>

@@ -10,9 +10,6 @@ public class Entity_Users {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
-    @ColumnInfo(name = "user_name")
-    private String userName;
-
     @ColumnInfo(name = "first_name")
     private String firstName;
 
@@ -22,11 +19,25 @@ public class Entity_Users {
     @ColumnInfo(name = "mail")
     private String mail;
 
-    public Entity_Users(String userName, String firstName, String lastName, String mail) {
-        this.userName = userName;
+    @ColumnInfo(name = "skin_type")
+    private int skinType;
+
+    @ColumnInfo(name = "age")
+    private int age;
+
+    @ColumnInfo(name = "zip_code")
+    private String zipCode;
+
+
+    public Entity_Users( String firstName, String lastName,
+                         String mail, int age,
+                        int skinType, String zipCode)
+    {
+        this.zipCode = zipCode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
+        this.skinType = skinType;
     }
 
     public void setUid(int uid) {
@@ -37,8 +48,8 @@ public class Entity_Users {
         return uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getZipCode() {
+        return zipCode;
     }
 
     public String getFirstName() {
@@ -53,8 +64,8 @@ public class Entity_Users {
         return mail;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public void setFirstName(String firstName) {
@@ -67,5 +78,21 @@ public class Entity_Users {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public int getSkinType() {
+        return skinType;
+    }
+
+    public void setSkinType(int skinType) {
+        this.skinType = skinType;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

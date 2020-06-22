@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -163,7 +164,8 @@ public class HomeScreen extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            Log.d(TAG, "onBackPressed: ");
         }
     }
 
@@ -469,6 +471,16 @@ public class HomeScreen extends AppCompatActivity {
             }
 
         }
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
+
+
 }

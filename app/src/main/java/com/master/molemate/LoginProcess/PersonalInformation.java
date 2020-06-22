@@ -20,10 +20,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.master.molemate.Adapter.MoleMateRecyclerViewAdpter;
-import com.master.molemate.HomeScreen.HomeScreen;
 import com.master.molemate.MainActivity;
 import com.master.molemate.R;
 import com.master.molemate.RoomDB.Entities.Entity_Users;
@@ -103,78 +102,74 @@ public class PersonalInformation extends AppCompatActivity {
 
         // Store values at the time of the login attempt.
 
-        firstName = firstNameView.getText().toString().trim();
+        //firstName = firstNameView.getText().toString().trim();
+        firstName = "";
         lastName = lastNameView.getText().toString().trim();
         zipCode = zipCodeView.getText().toString().trim();
         ageText = ageView.getText().toString().trim();
         skinType = skinTypeView.getText().toString().trim();
 
-        boolean cancel = false;
+        boolean valid = true;
 
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(firstName))
+        if (isEmpty(firstNameView) | isEmpty(lastNameView) | isEmpty(zipCodeView) | isEmpty(ageView) | isEmpty(skinTypeView) )
         {
-            firstNameView.setError(getString(R.string.error_field_required));
-            focusView = firstNameView;
-            cancel = true;
+            valid = false;
+        }
 
-        } else if (TextUtils.isEmpty(lastName) )
-        {
-            lastNameView.setError(getString(R.string.error_field_required));
-            focusView = lastNameView;
-            cancel = true;
 
-        } else if (TextUtils.isEmpty(zipCode) )
-        {
-            zipCodeView.setError(getString(R.string.error_field_required));
-            focusView = zipCodeView;
-            cancel = true;
-
-        } else if (TextUtils.isEmpty(ageText) )
-        {
-            ageView.setError(getString(R.string.error_field_required));
-            focusView = ageView;
-            cancel = true;
-
-        } else if (TextUtils.isEmpty(skinType) )
-        {
-            skinTypeView.setError(getString(R.string.error_field_required));
-            focusView = skinTypeView;
-            cancel = true;
-
-        } else if (zipCode.length()!= 5)
+        if (valid && zipCode.length()!= 5)
         {
             zipCodeView.setError(getString(R.string.error_invalid));
             focusView = zipCodeView;
-            cancel = true;
-
+            valid = false;
         }
 
-        if(!cancel) {
+
+
+        if(valid) {
             Log.d(TAG, "checkInputData: " + ageText);
             if ((Integer.parseInt(ageText) > 120) || (Integer.parseInt(ageText) < 14)) {
                 ageView.setError(getString(R.string.error_invalid));
                 focusView = ageView;
-                cancel = true;
+                valid = false;
 
             } else if ((Integer.parseInt(skinType) < 1) || (Integer.parseInt(skinType) > 4)) {
                 skinTypeView.setError(getString(R.string.error_invalid));
                 focusView = skinTypeView;
-                cancel = true;
+                valid = false;
             }
         }
 
-        if(!cancel) {
+        if(valid) {
+
+            int skinTypeInt = Integer.parseInt(skinType);
+            int age = Integer.parseInt(ageText);
              user = new Entity_Users(
-                    zipCode,
                     firstName,
                     lastName,
-                    mail
+                    mail,
+                     age,
+                     skinTypeInt,
+                     zipCode
             );
         }
 
-        return !cancel;
+        return valid;
+    }
+
+    private boolean isEmpty(EditText editTextView) {
+
+        String field = editTextView.getText().toString().trim();
+
+        if(field.isEmpty()){
+            editTextView.setError(getString(R.string.error_field_required));
+            focusView = editTextView;
+            return true;
+        }
+
+        return false;
     }
 
     private void settingUpInfoBox() {

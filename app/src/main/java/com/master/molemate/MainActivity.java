@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     if(decryptUser(user))
                     {
                         uid = user.getUid();
-                        Log.d(TAG, "collectedAllUsers() size: " + user.getUserName() + " with id " + uid);
+                        Log.d(TAG, "collectedAllUsers() size: " + user.getMail() + " with id " + uid);
                         getMolesForUser(uid);
 
                     }else {
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean decryptUser(Entity_Users userEntity) {
 
         try {
-            userEntity.setUserName(encrypter.decrypt(userEntity.getUserName()));
+            userEntity.setZipCode(encrypter.decrypt(userEntity.getZipCode()));
             userEntity.setMail(encrypter.decrypt(userEntity.getMail()));
             userEntity.setLastName(encrypter.decrypt(userEntity.getLastName()));
             userEntity.setFirstName(encrypter.decrypt(userEntity.getFirstName()));
@@ -151,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
             moleLibDao.insertUser(new Entity_Users(
                     "default",
                     "default",
-                    "default",
-                    "default@default.com"
+                    "default@default.com",
+                    1,
+                    0,
+                    "1"
             ));
 
             return null;

@@ -145,6 +145,7 @@ public class Fragment_Diagnosis extends Fragment {
         diagnosisTextHeader = layout.findViewById(R.id.fragment_diagnosis_text_header);
 
         settingUpSaveButton();
+        settingUpCancelButton();
 
         SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE);
         currentUser = sharedPref.getInt("uid", -1);
@@ -157,6 +158,15 @@ public class Fragment_Diagnosis extends Fragment {
         }
 
         return layout;
+    }
+
+    private void settingUpCancelButton() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((Diagnosis_Tool) Objects.requireNonNull(getActivity())).selectFragmentToShowWithTitle(Diagnosis_Tool.MOLE_POSITION);
+            }
+        });
     }
 
     private void printTopKLabels() {

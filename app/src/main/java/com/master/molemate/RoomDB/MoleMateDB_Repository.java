@@ -128,7 +128,7 @@ public class MoleMateDB_Repository {
     private static class DeleteUserAsyncTask extends AsyncTask<Entity_Users,Void,Void>{
 
         private DAO_Interface_Users userDao;
-        private String userName;
+        private String userMail;
 
         private DeleteUserAsyncTask(DAO_Interface_Users userDao) {
             this.userDao = userDao;
@@ -137,7 +137,7 @@ public class MoleMateDB_Repository {
 
         @Override
         protected Void doInBackground(Entity_Users... entity_users) {
-            userName = entity_users[0].getUserName();
+            userMail = entity_users[0].getMail();
             userDao.delete(entity_users[0]);
             return null;
         }
@@ -146,7 +146,7 @@ public class MoleMateDB_Repository {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Log.d(TAG, "onPostExecute: deleted user" + userName);
+            Log.d(TAG, "onPostExecute: deleted user" + userMail);
         }
     }
 

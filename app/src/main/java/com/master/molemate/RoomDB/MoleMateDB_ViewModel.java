@@ -107,15 +107,15 @@ public class MoleMateDB_ViewModel extends AndroidViewModel {
             user_entry.setFirstName(encrypter.encrypt(user_entry.getFirstName()));
             user_entry.setLastName(encrypter.encrypt(user_entry.getLastName()));
             user_entry.setMail(encrypter.encrypt(user_entry.getMail()));
-            user_entry.setUserName(encrypter.encrypt(user_entry.getUserName()));
+            user_entry.setZipCode(encrypter.encrypt(user_entry.getZipCode()));
 
 
-            Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getUserName() + " dec: " + encrypter.encrypt(user_entry.getUserName()));
+            Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getZipCode() + " dec: " + encrypter.encrypt(user_entry.getZipCode()));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getFirstName() + " dec: " + encrypter.encrypt(user_entry.getFirstName()));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getLastName() + " dec: " + encrypter.encrypt(user_entry.getLastName()));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getMail() + " dec: " + encrypter.encrypt(user_entry.getMail()));
 
-            Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getUserName() + " enc again: " + encrypter.decrypt(encrypter.encrypt(user_entry.getUserName())));
+            Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getZipCode() + " enc again: " + encrypter.decrypt(encrypter.encrypt(user_entry.getZipCode())));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getFirstName() + " enc again: " + encrypter.decrypt(encrypter.encrypt(user_entry.getFirstName())));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getLastName() + " enc again: " + encrypter.decrypt(encrypter.encrypt(user_entry.getLastName())));
             Log.d(TAG, "encryptMoleEntry: enc " + user_entry.getMail() + " enc again: " + encrypter.decrypt(encrypter.encrypt(user_entry.getMail())));

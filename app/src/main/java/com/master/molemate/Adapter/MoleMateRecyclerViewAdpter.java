@@ -1,12 +1,8 @@
 package com.master.molemate.Adapter;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,16 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.master.molemate.ImageFileStorage.SupporterClasses.RecyclerViewMoleImageItem;
 import com.master.molemate.R;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class MoleMateRecyclerViewAdpter extends RecyclerView.Adapter<MoleMateRecyclerViewAdpter.MoleMateRecyclerViewViewHolder> implements Filterable {
 

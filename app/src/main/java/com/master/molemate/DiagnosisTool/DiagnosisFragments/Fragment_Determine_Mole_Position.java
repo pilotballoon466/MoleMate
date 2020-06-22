@@ -120,10 +120,11 @@ public class Fragment_Determine_Mole_Position extends Fragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
                 Bitmap copyBlackBodyBitmap = blackBodyBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                Bitmap copyColoredBodyBitmap = coloredBodyBitmap.copy(Bitmap.Config.ARGB_8888,true);
 
                 int x = (int) motionEvent.getX();
                 int y = (int) motionEvent.getY();
-                pixel = coloredBodyBitmap.getPixel(x,y);
+                pixel = copyColoredBodyBitmap.getPixel(x,y);
 
                 //Creating white Dot on Body
                 for(int xCoord = x-8; xCoord<x+8; xCoord++){
@@ -184,7 +185,7 @@ public class Fragment_Determine_Mole_Position extends Fragment {
 
                 }
                 else {
-                    Toast.makeText(getActivity(), "Du hast die Position deiner Hautläsion noch nicht bestimmt!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Du hast die Position deiner Hautläsion noch nicht bestimmt! " + pixel + " " + isMolePosSet, Toast.LENGTH_LONG).show();
                 }
             }
         });

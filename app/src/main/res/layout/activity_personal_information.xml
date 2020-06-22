@@ -36,7 +36,6 @@
             android:textSize="24sp"
             />
 
-
     </LinearLayout>
 
 
@@ -58,8 +57,9 @@
             android:layout_columnWeight="1"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
+            android:nextFocusRight="@id/lastNameText"
+            android:imeOptions="actionNext"
              />
 
         <EditText
@@ -70,10 +70,11 @@
             android:hint="@string/lastName"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            android:nextFocusDown="@id/zipCodeText"
+            android:imeOptions="actionNext"
              />
 
     </com.google.android.material.circularreveal.CircularRevealGridLayout>
@@ -97,10 +98,13 @@
             android:hint="@string/zipCode"
             android:inputType="number"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"/>
+            android:layout_columnWeight="1"
+            android:maxLength="5"
+            android:nextFocusRight="@id/ageText"
+            android:imeOptions="actionNext"
+            />
 
         <EditText
             android:id="@+id/ageText"
@@ -110,12 +114,14 @@
             android:hint="@string/age"
             android:inputType="number"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
             android:gravity="center_vertical"
             android:textSize="18sp"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"/>
+            android:layout_columnWeight="1"
+            android:maxLength="3"
+            android:nextFocusDown="@id/skinTypeView"
+            android:imeOptions="actionNext"/>
 
 
     </com.google.android.material.circularreveal.CircularRevealGridLayout>
@@ -140,10 +146,13 @@
             android:hint="@string/skinType"
             android:inputType="number"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimaryDark"
             android:backgroundTint="@color/colorPrimaryDark"
             android:layout_rowWeight="1"
-            android:layout_columnWeight="1"/>
+            android:layout_columnWeight="1"
+            android:maxLength="1"
+            android:digits="1234"
+            android:imeOptions="actionDone"
+            />
 
         <TextView
             android:id="@+id/helpTextView"
@@ -151,7 +160,7 @@
             android:layout_height="0dp"
             android:textSize="18sp"
             android:text="@string/help"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|center_horizontal"
             android:textColor="@color/colorPrimaryDark"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"/>
@@ -176,6 +185,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="17dp"
         android:background="@android:color/transparent"
+        android:textColor="@android:color/darker_gray"
         android:text="@string/back"
         android:layout_weight="1" />
 

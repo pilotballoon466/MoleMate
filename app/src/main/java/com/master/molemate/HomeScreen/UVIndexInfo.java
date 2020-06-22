@@ -103,5 +103,37 @@ public class UVIndexInfo extends AppCompatActivity implements OnLoadCompleteList
             }
         }
     }
+
+    private void onItemSelected(MenuItem menuItem) {
+        Intent intent;
+        switch (menuItem.getItemId()){
+            case R.id.menu_item_home:
+                intent = new Intent(this, HomeScreen.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_cancer_free:
+                intent = new Intent(this, Diagnosis_Tool.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_health:
+                intent = new Intent(this, ImageFileArchive.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_prev:
+                intent = new Intent(this, Prevention.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_impressum:
+                intent = new Intent(this, Impressum.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_item_logout:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
 }
 

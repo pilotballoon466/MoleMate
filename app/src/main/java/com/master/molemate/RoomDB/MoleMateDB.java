@@ -16,7 +16,7 @@ import com.master.molemate.RoomDB.DAO_Interfaces.DAO_Interface_Users;
 import com.master.molemate.RoomDB.Entities.Entity_Mole_Library;
 import com.master.molemate.RoomDB.Entities.Entity_Users;
 
-@Database(entities = {Entity_Mole_Library.class, Entity_Users.class}, version = 3)
+@Database(entities = {Entity_Mole_Library.class, Entity_Users.class}, version = 4)
 public abstract class MoleMateDB extends RoomDatabase {
 
     private static final String TAG = "MoleUserDB";
@@ -64,8 +64,10 @@ public abstract class MoleMateDB extends RoomDatabase {
             userDAO.insert(new Entity_Users(
                     "default",
                     "default",
-                    "default",
-                    "default@default.com"));
+                    "default@default.com",
+                    1,
+                    0,
+                    "0"));
             return null;
         }
 
