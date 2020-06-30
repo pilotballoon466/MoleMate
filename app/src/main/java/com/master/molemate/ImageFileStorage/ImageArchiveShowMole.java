@@ -80,7 +80,7 @@ public class ImageArchiveShowMole extends AppCompatActivity {
 
         //Adding Toolbar and Title to Toolbar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Mole Diagnose");
+        toolbar.setTitle("MoleMate Diagnose");
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 

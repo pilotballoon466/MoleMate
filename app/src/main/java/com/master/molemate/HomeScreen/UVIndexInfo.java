@@ -67,8 +67,6 @@ public class UVIndexInfo extends AppCompatActivity implements OnLoadCompleteList
 
     private void settingUpBasics() {
         //Creating Menu
-
-
         //Adding Toolbar and Title to Toolabar
 
         toolbar = findViewById(R.id.toolbar);

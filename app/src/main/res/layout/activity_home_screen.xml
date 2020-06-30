@@ -80,7 +80,9 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryLight"
                 android:clickable="true"
-                android:onClick="getIndexInfo"/>
+                android:translationZ="8dp"
+                android:onClick="getIndexInfo"
+                android:background="@color/lightGray"/>
         </RelativeLayout>
 
         <View

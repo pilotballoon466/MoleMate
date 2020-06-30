@@ -28,6 +28,7 @@ import com.master.molemate.R;
 import com.shockwave.pdfium.PdfDocument;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Prevention extends AppCompatActivity implements OnLoadCompleteListener, OnPageChangeListener {
 
@@ -70,27 +71,13 @@ public class Prevention extends AppCompatActivity implements OnLoadCompleteListe
 
     private void settingUpBasics() {
         //Creating Menu
-        NavigationView mainMenu = findViewById(R.id.mainMenu);
-        mainMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                onItemSelected(menuItem);
-                return false;
-            }
-        });
 
-        mainMenu.setItemIconTintList(null);
 
         //Adding Toolbar and Title to Toolabar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.cancerCheckerClass);
+        toolbar.setTitle(R.string.prevention);
         setSupportActionBar(toolbar);
-
-        //Adding the Burgermenu to Toolbar
-        drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_opening, R.string.nav_closing);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -130,10 +117,7 @@ public class Prevention extends AppCompatActivity implements OnLoadCompleteListe
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
-        else
-            super.onBackPressed();
+        super.onBackPressed();
     }
 
 

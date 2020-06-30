@@ -86,32 +86,21 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
         setContentView(R.layout.activity_image_file_storage);
 
         //Creating Menu
-        mainMenu = findViewById(R.id.mainMenu);
-        mainMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                onItemSelected(menuItem);
-                return false;
-            }
-        });
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.yourArchive);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        mainMenu.setItemIconTintList(null);
 
         SharedPreferences sharedPref = this.getSharedPreferences(this.getString(R.string.preference_file), Context.MODE_PRIVATE);
         encrypter = new TextConverter(Objects.requireNonNull(sharedPref.getString("key", "")));
         currentUser = sharedPref.getInt("uid",-1);
 
         //Adding Toolbar and Title to Toolbar
-        toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.yourArchive);
-        setSupportActionBar(toolbar);
 
 
         //Adding the Burgermenu to Toolbar
-        drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_opening, R.string.nav_closing);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+
 
         //Creating FragmentAdapter - Handler for Fragments + Creating ViewPager
         //fragmentContainerArchive = findViewById(R.id.fragment_container_image_archive);
@@ -212,6 +201,7 @@ public class ImageFileArchive extends AppCompatActivity implements MoleMateRecyc
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu, menu);
+
 
         MenuItem searchItem = menu.findItem(R.id.searchMenu);
         SearchView searchView = (SearchView) searchItem.getActionView();

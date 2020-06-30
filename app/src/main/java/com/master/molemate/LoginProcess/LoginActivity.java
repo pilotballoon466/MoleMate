@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.master.molemate.MainActivity;
 import com.master.molemate.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
@@ -32,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button registrationButton;
     private SharedPreferences sharedPref;
 
+    private String mail;
+    private String password;
+    private View focusView;
 
     private FirebaseAuth auth;
 
@@ -77,7 +83,14 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn(mailView.getText().toString().trim(), passwordView.getText().toString().trim());
+
+                if(checkInputData()) {
+
+                    mail = mailView.getText().toString().trim();
+                    password = passwordView.getText().toString().trim();
+
+                    signIn(mail, password);
+                }
             }
         });
     }
@@ -134,6 +147,72 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    /**
+     *
+     * first_registration_step() collects the input Data from the perspective fields and verifies the data
+     * if the Data is correct it passes the Data to Firebase which tries to create a new Account
+     * otherwise an error is thrown and will be shown on the screen, so that the user can adapt the input
+     */
+    private boolean checkInputData() {
+
+        boolean valid = true;
+
+        if(!validateMail(mailView)  | !validatePassword(passwordView)){
+            valid = false;
+        }
+
+        return valid;
+
+    }
+
+    private boolean validateMail(EditText toCheckMail){
+
+        String mail = toCheckMail.getText().toString().trim();
+        // Check for a valid email address.
+        if (mail.isEmpty()) {
+            toCheckMail.setError(getString(R.string.error_field_required));
+            focusView = toCheckMail;
+            return false;
+        } else if (!isEmailValid(mail)) {
+            toCheckMail.setError(getString(R.string.error_invalid_email));
+            focusView = toCheckMail;
+            return false;
+        } else {
+            toCheckMail.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword(EditText toCheckPassword) {
+        // Check for a valid password, if the user entered one.
+
+        String password = toCheckPassword.getText().toString().trim();
+
+        if (password.isEmpty()) {
+            toCheckPassword.setError(getString(R.string.error_field_required));
+            focusView = toCheckPassword;
+            return false;
+
+        } else {
+            toCheckPassword.setError(null);
+            return true;
+        }
+    }
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Method to check the validity of the Email
+     * @param email
+     * @return boolean
+     */
+    private boolean isEmailValid(String email) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.find();
+    }
+
+
 
 
     @Override

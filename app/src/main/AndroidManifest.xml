@@ -22,13 +22,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Prevention.Prevention" />
-        <activity android:name=".Impressum.Impressum" />
+        <activity android:name=".Prevention.Prevention"
+            android:parentActivityName=".HomeScreen.HomeScreen"/>
+        <activity android:name=".Impressum.Impressum"
+            android:parentActivityName=".HomeScreen.HomeScreen"/>
         <activity android:name=".HomeScreen.HomeScreen" />
         <activity
             android:name=".HomeScreen.UVIndexInfo"
             android:parentActivityName=".HomeScreen.HomeScreen" />
-        <activity android:name=".DiagnosisTool.Diagnosis_Tool" />
+        <activity android:name=".DiagnosisTool.Diagnosis_Tool"
+            android:parentActivityName=".HomeScreen.HomeScreen"/>
         <activity
             android:name=".ImageFileStorage.ImageFileArchive"
             android:parentActivityName=".HomeScreen.HomeScreen" />
@@ -36,7 +39,8 @@
             android:name=".ImageFileStorage.ImageArchiveShowMole"
             android:parentActivityName=".ImageFileStorage.ImageFileArchive" />
         <activity android:name=".ChooseActionScreen" />
-        <activity android:name=".LoginProcess.UserRegistration" />
+        <activity android:name=".LoginProcess.UserRegistration"
+            android:parentActivityName=".LoginProcess.LoginActivity"/>
         <activity android:name=".LoginProcess.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,9 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginProcess.PersonalInformation">
+        <activity android:name=".LoginProcess.PersonalInformation"
+            android:parentActivityName=".LoginProcess.LoginActivity"/>
 
-        </activity>
         <activity android:name=".MainActivity" />
 
         <provider

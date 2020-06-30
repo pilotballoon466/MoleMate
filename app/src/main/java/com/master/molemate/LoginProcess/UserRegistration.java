@@ -178,4 +178,10 @@ public class UserRegistration extends AppCompatActivity {
         return match.matches();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -79,7 +79,7 @@ public class Diagnosis_Tool extends AppCompatActivity {
 
         //Adding Toolbar and Title to Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Mole Screening");
+        toolbar.setTitle("MoleMate Screening");
         setSupportActionBar(toolbar);
 
         //Adding the Burgermenu to Toolbar

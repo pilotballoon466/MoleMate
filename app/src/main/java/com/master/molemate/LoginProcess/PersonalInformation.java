@@ -283,4 +283,10 @@ public class PersonalInformation extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, UserRegistration.class);
+        startActivity(intent);
+    }
 }

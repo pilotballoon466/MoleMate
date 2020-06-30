@@ -10,4 +10,5 @@
     <color name="buttonColor">#192951</color>
     <color name="btnTextColor">#FFFFFF</color>
     <color name="blackText">#000000</color>
+    <color name="lightGray">#1EF5F2F2</color>
 </resources>
